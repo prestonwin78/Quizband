@@ -1,0 +1,75 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
+#main-section {
+    background-color: rgb(237, 125, 49);
+}
+
+a, b {
+    padding: 20px;
+    display: inline-block;
+}
+
+
+.info-container {
+    background-color: white;
+    margin: 40px;
+    padding: 0px 30px 30px 30px;
+    border-radius: 10px;
+    align-content: center;
+    width: 100%;
+}
+
+h1 {
+    color: white;
+    font-size: 3em;
+}
+
+#title-section {
+    margin: auto;
+    text-align: center;
+}
+
+hr {
+    border: none;
+}
+
+#start {
+    border: 0px solid black;
+    border-radius: 50px;
+    background-color: hsl(153, 100%, 58%);/*hsl(180, 100%, 50%);*/
+    padding: 16px 40px;
+    position: relative;
+    top: 100px;
+}
+
+#start:hover {
+    background-color: hsl(180, 100%, 87%);
+}
+
+#quiz-image, #people-image {
+    width: 100%;
+    max-width: 60px;
+    position: relative;
+    margin: 20px auto 20px auto;
+    display: flex; 
+    /*justify-content: center;*/
+}
+
+.blue-bar {
+    height: 20px;
+    background-color: hsl(227, 69%, 58%);
+    margin: 50px 20%;
+}
+
+
+
+
+
+
+
+
+
