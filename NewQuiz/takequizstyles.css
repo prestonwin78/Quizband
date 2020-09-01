@@ -14,6 +14,7 @@
 }
 
 .quizcard {
+    padding: 1em 1.5em;
     margin-bottom: 4rem;
 }
 
@@ -27,4 +28,15 @@
     float: left;
     width: 6em;
     margin-right: 5%;
+}
+
+.answer-choice {
+    margin: .5em 0;
+    padding: .5em .5em 0 .5em;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+}
+
+.question-text {
+    margin-bottom: .5em;
 }
