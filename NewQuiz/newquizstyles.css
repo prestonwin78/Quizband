@@ -1,0 +1,30 @@
+.quizcard {
+    border-radius: 5px;
+    border-color: gray;
+    max-width: 
+}
+
+#blank-row {
+    width: 100%;
+    height: 3em;
+}
+
+#create-quiz-text {
+    margin: .5em; 
+}
+
+.quizcard {
+    margin-bottom: 4rem;
+}
+
+#submit {
+    background-color: #49cd32;
+    border-color: #ffffff;
+    border-width: 1px;
+}
+
+#cancel, #submit {
+    float: left;
+    width: 6em;
+    margin-right: 5%;
+}
