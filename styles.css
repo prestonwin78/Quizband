@@ -3,6 +3,9 @@
     margin: 0;
 }
 
+body {
+    background-color: rgb(237, 125, 49);
+}
 
 .main-section {
     background-color: rgb(237, 125, 49);

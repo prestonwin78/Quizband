@@ -1,0 +1,36 @@
+.quiz-card {
+    margin: 0 3rem 2rem 3rem;
+    width: 80%;
+}
+
+h1 {
+    margin-left: 3rem;
+    margin-top: 1rem;
+}
+
+h2 {
+    margin: 1rem 3rem;
+    text-align: center; /* not working */
+}
+
+.tag {
+    width: 50%;
+    text-align: center;
+    border-radius: 50px;
+    font-size: .9rem;
+    padding: .25rem 0;
+    margin: 0;
+}
+
+.tag-history {
+    background-color: hsl(55, 87%, 68%);
+}
+
+.tag-science {
+    background-color: hsl(149, 74%, 58%);
+}
+
+.plus-container {
+    width: 25%;
+    float: right;
+}
