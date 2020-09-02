@@ -34,3 +34,9 @@ h2 {
     width: 25%;
     float: right;
 }
+
+.divider {
+    width: 17rem;
+    height: .4rem;
+    margin-left: 3rem;
+}
