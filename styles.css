@@ -69,7 +69,23 @@ hr {
 }
 
 
+.tag {
+    width: 50%;
+    text-align: center;
+    border-radius: 50px;
+    font-size: .9rem;
+    padding: .25rem 0;
+    margin: 0;
+    max-width: 100px;
+}
 
+.tag-history {
+    background-color: hsl(55, 87%, 68%);
+}
+
+.tag-science {
+    background-color: hsl(149, 74%, 58%);
+}
 
 
 
