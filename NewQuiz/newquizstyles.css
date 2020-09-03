@@ -1,0 +1,32 @@
+#quiz-title{
+    font-size: 3em;
+    background: none;
+    text-align: center;
+    font-family: sans-serif;
+    border: 1px solid transparent;
+    border-radius: .5rem;
+    margin: 1rem 0;
+}
+
+#quiz-title:hover {
+    background-color: hsla(0, 0%, 0%, 10%);
+}
+
+#quiz-title:focus {
+    border: 1px solid gray;
+}
+
+
+.answer-choice input[type="radio"]{
+    display: inline-block;
+    width: auto;
+}
+
+.answer-choice label {
+    width: 80%;
+}
+
+.answer-choice label input[type="text"] {
+    width: 100%;
+    border: none;
+}
