@@ -2,6 +2,7 @@
      $quiz_id = 1;  //TODO: this needs to be set beforehand
      $dbquestions = [];
      $choices = [];
+     $quiz_title = "";
      
      $dbconn = mysqli_connect("localhost", "USERNAME", "PASSWORD", "quizband");
      
@@ -22,8 +23,13 @@
             $choices[$row['question_num']][$row['answer_choice_num']] = $row['choice_text'];
         }
 
+        //Get title of quiz
+        $title_query = "SELECT title from quiz
+                        WHERE quiz_id = $quiz_id";
+        $title_result = mysqli_query($dbconn, $title_query);
+        $quiz_title = mysqli_fetch_assoc($title_result)['title'];
+
          //TODO: free result
-         //TODO: get title from database
      }
 ?>
 
@@ -51,7 +57,7 @@
         </div>
         <div class="row main-section">
             <div class="col-12 text-center">
-                <h1 id="create-quiz-text">General History</h1>
+                <h1 id="create-quiz-text"><?php echo $quiz_title; ?></h1>
             </div>
         </div>
         
