@@ -2,7 +2,7 @@
     //Get quiz info from database
     //Compare results with form data
     //Calculate score
-    //Store user's results in database
+    //TODO: Store user's results in database
     //echo print_r($_GET);
 
     //echo "</br></br>";
