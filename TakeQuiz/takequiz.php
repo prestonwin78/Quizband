@@ -1,6 +1,7 @@
 <?php 
-     $quiz_id = 1;  //TODO: this needs to be set beforehand
+     $quiz_id = 2;  //TODO: this needs to be set beforehand
      $dbquestions = [];
+     $questions = [];
      $choices = [];
      $quiz_title = "";
      
@@ -13,14 +14,18 @@
          //Get questions
         $querysql = "SELECT question_num, text, answer_choice_num, choice_text
                      FROM question NATURAL JOIN answer_choice
-                     WHERE quiz_id = 1 ORDER BY question_num";
+                     WHERE quiz_id = $quiz_id ORDER BY question_num";
         $query_result = mysqli_query($dbconn, $querysql);
         $dbquestions = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
+        mysqli_free_result($query_result);
 
-        //Build answer choices array in form of
-        //choices[questionNum][answerChoiceNum] == choice text
+        /*  Build answer choices array in form of
+            choices[questionNum][answerChoiceNum] == choice text
+            Build questions array in form of 
+            questions[questionNum] = question text  */
         foreach ($dbquestions as $row){
             $choices[$row['question_num']][$row['answer_choice_num']] = $row['choice_text'];
+            $questions[$row['question_num']] = $row['text'];
         }
 
         //Get title of quiz
@@ -28,8 +33,9 @@
                         WHERE quiz_id = $quiz_id";
         $title_result = mysqli_query($dbconn, $title_query);
         $quiz_title = mysqli_fetch_assoc($title_result)['title'];
-
-         //TODO: free result
+        mysqli_free_result($title_result);
+        
+        mysqli_close($dbconn);
      }
 ?>
 
@@ -62,56 +68,24 @@
         </div>
         
         <form action="results.php">
-            <div class="row main-section">
-                <div class="col-3"></div>
-                <div class="col-6 quizcard bg-light">
-                    <h2 class="question-text">What is the capital of Argentina?</h2>
-                    <div class="answer-options">
-                        <div class="answer-choice">
-                            <input type="radio" id="q1a1" name="question1" value="Belarus">
-                            <label for="q1a1">Belarus</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q1a2" name="question1" value="Caracas">
-                            <label for="q1a2">Caracas</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q1a3" name="question1" value="Buenos Aires">
-                            <label for="q1a3">Buenos Aires</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q1a4" name="question1" value="Bolivia">
-                            <label for="q1a4">Bolivia</label>
+            <?php for($i = 1; $i <= sizeof($choices); $i++){ ?>
+                <div class="row main-section">
+                    <div class="col-3"></div>
+                    <div class="col-6 quizcard bg-light">
+                        <h2 class="question-text"><?php echo $questions[$i];?></h2>
+                        <div class="answer-options">
+                            <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
+                                <div class="answer-choice">                                         
+                                    <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo $choices[$i][$j];?>">
+                                    <label for="<?php echo "q" . $i . "a" . $j;?>"><?php echo $choices[$i][$j]?></label>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
-                </div>
                 <div class="col-3"></div>
             </div>
-            <div class="row main-section">
-                <div class="col-3"></div>
-                <div class="col-6 quizcard bg-light">
-                    <h2 class="question-text">Who was the first president of the United States?</h2>
-                    <div class="answer-options">
-                        <div class="answer-choice">
-                            <input type="radio" id="q2a1" name="question2" value="George Washington">
-                            <label for="q2a1">George Washington</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q2a2" name="question2" value="Abraham Lincoln">
-                            <label for="q2a2">Abraham Lincoln</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q2a3" name="question2" value="Thomas Jefferson">
-                            <label for="q2a3">Thomas Jefferson</label>
-                        </div>
-                        <div class="answer-choice">
-                            <input type="radio" id="q2a4" name="question2" value="Theodore Roosevelt">
-                            <label for="q2a4">Theodore Roosevelt</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3"></div>
-            </div>
+            <?php } ?>
+            
             <div class="row main-section">
                 <div class="col-6"></div>
                 <div class="col-6">
@@ -120,6 +94,6 @@
                 </div>
             </div>
             <div id="blank-row" class="main-section"></div>
-            <input type='hidden' id="quizid" name='quizid' value='1'>
+            <input type='hidden' id="quizid" name='quizid' value="<?php echo $quiz_id;?>">
         </form>
     <body>
