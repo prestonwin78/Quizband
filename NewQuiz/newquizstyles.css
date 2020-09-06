@@ -26,7 +26,12 @@
     width: 80%;
 }
 
-.answer-choice label input[type="text"] {
-    width: 100%;
+.answer-choice input[type="text"] {
+    width: 90%;
     border: none;
+    margin: 0 .25rem .5rem 0;
+}
+
+.question {
+    width: 100%;
 }
