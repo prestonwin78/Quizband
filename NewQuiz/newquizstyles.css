@@ -35,3 +35,9 @@
 .question {
     width: 100%;
 }
+
+#addquiz {
+    margin: 2em 0;
+    padding: .5rem 1rem;
+    border-radius: 50%;
+}

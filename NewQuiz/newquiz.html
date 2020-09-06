@@ -11,6 +11,10 @@
         <link rel="stylesheet" type="text/css" href="../styles.css">
         <link rel="stylesheet" type="text/css" href="../TakeQuiz/takequizstyles.css">
         <link rel="stylesheet" type="text/css" href="newquizstyles.css">
+
+        <!-- Mustache.js for templating -->
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
+        <script defer src="func.js"></script>
     </head>
     <body>
         <div id="main-content" class="container-fluid">
@@ -32,52 +36,59 @@
 
                 <!-- This div duplicated for each new 
                      question dynamically in func.js -->
-                <div class="row main-section">
-                    <div class="col-3"></div>
-                    <div class="col-6 quizcard bg-light">
-                        <textarea class="question" name="question1" cols="40"></textarea>
-                        <div class="answer-options">
-                            <div class="answer-choice">
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input type="radio" id="q1a1" value="q1a1" name="question1answer">
+                <script id="quiz-card-template" type="x-tmpl-mustache">
+                    <div class="row main-section">
+                        <div class="col-3"></div>
+                        <div class="col-6 quizcard bg-light">
+                            <textarea class="question" name="question{{question-num}}" cols="40"></textarea>
+                            <div class="answer-options">
+                                <div class="answer-choice">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <input type="radio" id="q{{question-num}}a1}" value="q{{question-num}}a1" name="question{{question-num}}answer">
+                                        </div>
+                                        <div class="col-11">
+                                            <input type="text" name="q{{question-num}}a1text">
+                                        </div>
                                     </div>
-                                    <div class="col-11">
-                                        <input type="text" name="q1a1text">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <input type="radio" id="q{{question-num}}a2" value="q{{question-num}}a2" name="question{{question-num}}answer">
+                                        </div>
+                                        <div class="col-11">
+                                            <input type="text" name="q{{question-num}}a2text">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input type="radio" id="q1a2" value="q1a2" name="question1answer">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <input class="b" type="radio" id="q{{question-num}}a3" value="q{{question-num}}a3" name="question{{question-num}}answer">
+                                        </div>
+                                        <div class="col-11">
+                                            <input type="text" name="q{{question-num}}a3text">
+                                        </div>
                                     </div>
-                                    <div class="col-11">
-                                        <input type="text" name="q1a2text">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input class="b" type="radio" id="q1a3" value="q1a3" name="question1answer">
-                                    </div>
-                                    <div class="col-11">
-                                        <input type="text" name="q1a3text">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <input type="radio" id="q1a4" value="q1a4" name="question1answer">
-                                    </div>
-                                    <div class="col-11">
-                                        <input type="text" name="q1a4text">
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <input type="radio" id="q{{question-num}}a4" value="q{{question-num}}a4" name="question{{question-num}}answer">
+                                        </div>
+                                        <div class="col-11">
+                                            <input type="text" name="q{{question-num}}a4text">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-3"></div>
                     </div>
-                    <div class="col-3"></div>
-                </div>
-
+                </script>
             </div>
             
+            <div class="row main-section">
+                <div class="col-12 text-center">
+                    <button id="addquiz" class="btn btn-light">+</button>
+                </div>
+            </div>
+
             <div class="row main-section">
                 <div class="col-6"></div>
                 <div class="col-6">
