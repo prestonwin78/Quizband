@@ -7,6 +7,7 @@ function addQuestion(event){
     event.preventDefault();
     ++totalQuestions;
 
+    // Holds values to be placed into template
     let card = {
         'question-num': totalQuestions
     };
@@ -14,11 +15,13 @@ function addQuestion(event){
     let templateText = templateElement.innerHTML;
     let rendered = Mustache.render(templateText, card);
 
-    // doesn't work - resets all values in the dom
-    /* questionSection.innerHTML = questionSection.innerHTML + rendered; */
-   
+    //Create new div element to append quizcard to document
+    let newElem = document.createElement('div');
+    newElem.classList.add("row");
+    newElem.classList.add("main-section");
+    newElem.innerHTML = rendered;
 
-    
+    questionSection.appendChild(newElem);
 }
 
 document.getElementById("addquiz").addEventListener('click', addQuestion);
