@@ -44,6 +44,8 @@
         //echo print_r($dbanswers);
     }
 
+    mysqli_close($dbconn);
+
     $total_questions = sizeof($dbanswers);
 
     foreach ($dbanswers as $question){
@@ -54,12 +56,6 @@
             $total_incorrect++;
         }
     }
-
-    /*
-    echo "Total questions: " . $total_questions . "</br></br>";
-    echo "Total correct: " . $total_correct . "</br></br>";
-    echo "Total incorrect: " . $total_incorrect . "</br></br>";
-    */
 
     //Calculate score to 0 decimal places
     $score = floor($total_correct / $total_questions * 100);
