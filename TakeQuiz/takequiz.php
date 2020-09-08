@@ -5,7 +5,7 @@
      $choices = [];
      $quiz_title = "";
      
-     $dbconn = mysqli_connect("localhost", "USERNAME", "PASSWORD", "quizband");
+     $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
      
      //check connection
      if(!$dbconn){
