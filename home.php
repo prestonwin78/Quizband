@@ -1,18 +1,23 @@
 <?php 
 
-    $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
+    $quizzes = main();
+
+    function main(){
+        $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
+        if(!$dbconn){
+            echo "error connecting";
+        }
     
-    if(!$dbconn){
-        echo "error connecting";
+        $arr = getQuizIds($dbconn);
+
+        //get array holding info about each quiz
+        //  in form     [quiz-id] => [description, name, ...]
+        $quiz_data = getQuizData($dbconn, $arr);
+
+        mysqli_close($dbconn);
+
+        return $quiz_data;
     }
-
-    $arr = getQuizIds($dbconn);
-    //get array holding info about each quiz
-    //  in form     [quiz-id] => [description, name, ...]
-    $quiz_data = getQuizData($dbconn, $arr);
-
-
-    echo print_r($quiz_data);
 
     /* returns an array of 3 unique quiz IDs */
     /* saves a call to MySQL for 3 random quizzes */
@@ -58,13 +63,41 @@
                 } else {
                     $result = mysqli_stmt_get_result($stmt);
                     $quiz_data[$q_id] = mysqli_fetch_row($result);
-                    //echo print_r($quiz_data);
                 }
 
                 /* make sure to htmlescape when outputting
                     to the browser */
             }
+
+            reindex($quiz_data);
+
             return $quiz_data;
+        }
+    }
+
+    /* Reindex array to use names instead of numbers */
+    function reindex(&$quiz_data){
+        foreach($quiz_data as $q_id => $q_data){
+            foreach($q_data as $key => $value){
+                unset($quiz_data[$q_id][$key]); //unset previous value
+                switch($key){
+                    case 0:
+                        $quiz_data[$q_id]['quiz_id'] = $value;
+                        break;
+                    case 1:
+                        $quiz_data[$q_id]['title'] = $value;
+                        break;
+                    case 2:
+                        $quiz_data[$q_id]['description'] = $value;
+                        break;
+                    case 3:
+                        $quiz_data[$q_id]['subject'] = $value;
+                        break;
+                    case 4:
+                        $quiz_data[$q_id]['creator'] = $value;
+                        break;
+                }
+            }
         }
     }
 ?>
@@ -102,24 +135,21 @@
                     <div class="row">
                         <h2 class="text-light">Take a Quiz</h2>
                     </div>
-                    <div class="row">
-                        <div class="card quiz-card">
-                            <div class="card-body">
-                                <h5 class="card-title">General History</h5>
-                                <p class="card-text">A short quiz which has some general history and geography questions. </p>
-                                <h6 class="tag tag-history">History</h6>
+
+                    <?php foreach($quizzes as $q_id => $q_data){ ?>
+
+                        <div class="row">
+                            <div class="card quiz-card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= $q_data['title'] ?></h5>
+                                    <p class="card-text"><?= $q_data['description'] ?></p>
+                                    <h6 class="tag tag-<?=$q_data['subject']?>"><?= $q_data['subject'] ?></h6>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="card quiz-card">
-                            <div class="card-body">
-                                <h5 class="card-title">General Science</h5>
-                                <p class="card-text">A short quiz which has some general science questions. </p>
-                                <h6 class="tag tag-science">Science</h6>
-                            </div>
-                        </div>
-                    </div>
+
+                    <?php } ?>
+
                 </div>
                 <div class="col-6 col-lg-4">
                     <div class="row">
