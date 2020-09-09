@@ -8,6 +8,7 @@
             echo "error connecting";
         }
     
+        /* Get 3 random quiz ids of quizzes to display on page */
         $arr = getQuizIds($dbconn);
 
         //get array holding info about each quiz
@@ -143,7 +144,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $q_data['title'] ?></h5>
                                     <p class="card-text"><?= $q_data['description'] ?></p>
-                                    <h6 class="tag tag-<?=$q_data['subject']?>"><?= $q_data['subject'] ?></h6>
+                                    <h6 class="tag tag-<?php echo $q_data['subject']; ?>"><?= $q_data['subject'] ?></h6>
                                 </div>
                             </div>
                         </div>
