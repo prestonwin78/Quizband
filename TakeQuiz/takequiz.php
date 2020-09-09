@@ -66,7 +66,7 @@
     <body>
         <div id="main-content" class="container-fluid">
             <div id="header" class="row bg-light">
-                <b>Quizband</b>
+            <a id="title" class="text-dark" href="../home.php">Quizband</a>
                 <a>Contact</a>
                 <a>About</a>
                 <a>Sign In</a>

@@ -114,11 +114,12 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="stylesheet" type="text/css" href="home-styles.css">
+        <script src="./home.js" defer></script>
     </head>
     <body>
         <div id="main-content" class="container-fluid">
             <div id="header" class="row bg-light">
-                <b>Quizband</b>
+            <a id="title" class="text-dark" href="home.php">Quizband</a>
                 <a>Contact</a>
                 <a>About</a>
                 <a>Sign In</a>
@@ -160,7 +161,7 @@
                         <div class="card quiz-card">
                             <div class="card-body">
                                 <h5>New Quiz</h5>
-                                <div class="plus-container">
+                                <div id="new-quiz-plus" class="plus-container">
                                     <svg width="2em" height="3em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                     </svg>
