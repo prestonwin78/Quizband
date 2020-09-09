@@ -6,12 +6,17 @@
         echo "error connecting";
     }
 
-    $arr = getQuizzes($dbconn);
-    echo print_r($arr);
+    $arr = getQuizIds($dbconn);
+    //get array holding info about each quiz
+    //  in form     [quiz-id] => [description, name, ...]
+    $quiz_data = getQuizData($dbconn, $arr);
+
+
+    echo print_r($quiz_data);
 
     /* returns an array of 3 unique quiz IDs */
     /* saves a call to MySQL for 3 random quizzes */
-    function getQuizzes($dbconn){
+    function getQuizIds($dbconn){
         $quiz_arr = [];
         $total_quizzes = getTotalQuizzes($dbconn);
         for($i = 0; $i < 3; $i++){
@@ -32,6 +37,34 @@
             echo "Error";
         } else {
             return mysqli_fetch_row($result)[0];
+        }
+    }
+
+    //Returns array of quiz data
+    function getQuizData($dbconn, $arr){
+        $query = "SELECT * FROM quiz
+                  WHERE quiz_id=?";
+        $stmt = mysqli_stmt_init($dbconn);
+        if(!mysqli_stmt_prepare($stmt, $query)){
+            echo "error";
+        } else {
+            $q_id = null; // dummy value
+            $quiz_data = [];    
+            mysqli_stmt_bind_param($stmt, "i", $q_id);
+
+            foreach($arr as $q_id){
+                if(!mysqli_stmt_execute($stmt)){
+                    echo "Error";
+                } else {
+                    $result = mysqli_stmt_get_result($stmt);
+                    $quiz_data[$q_id] = mysqli_fetch_row($result);
+                    //echo print_r($quiz_data);
+                }
+
+                /* make sure to htmlescape when outputting
+                    to the browser */
+            }
+            return $quiz_data;
         }
     }
 ?>
