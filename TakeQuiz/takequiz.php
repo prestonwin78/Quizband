@@ -12,6 +12,7 @@
      $questions = [];
      $choices = [];
      $quiz_title = "";
+     $quiz_subject = "";
      
      $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
      
@@ -36,11 +37,13 @@
             $questions[$row['question_num']] = $row['text'];
         }
 
-        //Get title of quiz
-        $title_query = "SELECT title from quiz
+        //Get title, subject of quiz
+        $title_query = "SELECT title, subject from quiz
                         WHERE quiz_id = $quiz_id";
         $title_result = mysqli_query($dbconn, $title_query);
-        $quiz_title = mysqli_fetch_assoc($title_result)['title'];
+        $result_arr = mysqli_fetch_assoc($title_result);
+        $quiz_title = $result_arr['title'];
+        $quiz_subject = $result_arr['subject'];
         mysqli_free_result($title_result);
         
         mysqli_close($dbconn);
@@ -103,5 +106,7 @@
             </div>
             <div id="blank-row" class="main-section"></div>
             <input type='hidden' id="quizid" name='quizid' value="<?php echo $quiz_id;?>">
+            <input type='hidden' id="quizsub" name='quiz-subject' value="<?php echo $quiz_subject;?>">
+            <input type='hidden' id="quiztitle" name='quiz-title' value="<?php echo $quiz_title;?>">
         </form>
     <body>

@@ -3,9 +3,9 @@
     //Compare results with form data
     //Calculate score
     //TODO: Store user's results in database
-    //echo print_r($_GET);
+    echo print_r($_GET);
 
-    //echo "</br></br>";
+    echo "</br></br>";
 
     $score = 0;
     $total_correct = 0;
@@ -14,6 +14,8 @@
     $quiznumber = -1;
     $useranswers = [];
 
+    $quiz_title = $_GET['quiz-title'];
+    $quiz_subject = $_GET['quiz-subject'];
 
     if(isset($_GET)){
         $quiznumber = $_GET['quizid'];
@@ -89,8 +91,8 @@
                 <div class="col-4">
                     <div class="score-box">
                         <div class="quiz-score-box">
-                            <h5>General History</h5>
-                            <h6 class="tag tag-history text-dark">History</h6>
+                            <h5><?php echo $quiz_title; ?></h5>
+                            <h6 class="tag tag-<?php echo $quiz_subject; ?> text-dark"><?php echo $quiz_subject; ?></h6>
                         </div>
                         <div class="score-score-box">
                             <h6>Your score:</h6>
@@ -103,7 +105,8 @@
                 <div class="col-4"></div>
                 <div class="col-4">
                     <div class="button-container text-center">
-                        <button type="button" class="btn btn-light home-button">Back to home page</button>
+                        <button onclick="window.location.href='../home.php'" type="button" 
+                            class="btn btn-light home-button">Back to home page</button>
                     </div>
                 </div>
             </div>
