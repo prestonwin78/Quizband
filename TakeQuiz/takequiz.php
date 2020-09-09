@@ -1,5 +1,13 @@
 <?php 
-     $quiz_id = 4;  //TODO: this needs to be set beforehand
+     
+     $quiz_id = null;
+
+     if(isset($_GET['quiz_id'])){
+        $quiz_id = $_GET['quiz_id'];
+     } else {
+         echo "error";
+     }
+     
      $dbquestions = [];
      $questions = [];
      $choices = [];

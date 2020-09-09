@@ -124,7 +124,7 @@
                 <a>Sign In</a>
             </div>
             <div class="row main-section">
-                <h1>Hello, John.</h1>
+                <h1>Hello.</h1>
             </div>
             <div class="row main-section">
                 <div class="divider bg-dark">
@@ -142,7 +142,7 @@
                         <div class="row">
                             <div class="card quiz-card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= $q_data['title'] ?></h5>
+                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo $q_id;?>"><?= $q_data['title'] ?></a>
                                     <p class="card-text"><?= $q_data['description'] ?></p>
                                     <h6 class="tag tag-<?php echo $q_data['subject']; ?>"><?= $q_data['subject'] ?></h6>
                                 </div>
