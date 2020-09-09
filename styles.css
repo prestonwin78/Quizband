@@ -79,6 +79,8 @@ hr {
     max-width: 100px;
 }
 
+/* Subject Tags */
+
 .tag-History {
     background-color: hsl(55, 87%, 68%);
 }
@@ -87,7 +89,33 @@ hr {
     background-color: hsl(149, 74%, 58%);
 }
 
-/* TODO: more subjects */
+.tag-Art {
+    background-color: hsl(312, 52%, 62%);
+}
+
+.tag-Math {
+    background-color: hsl(0, 87%, 70%);
+}
+
+.tag-Music {
+    background-color: hsl(266, 87%, 70%);
+}
+
+.tag-Literature {
+    background-color: hsl(179, 46%, 59%);
+}
+
+.tag-SocialStudies {
+    background-color: hsl(80, 71%, 66%);
+}
+
+.tag-Technology {
+    background-color: hsl(265, 68%, 69%);
+}
+
+.tag-Sports {
+    background-color: hsl(32, 78%, 68%);
+}
 
 
 
