@@ -12,6 +12,7 @@
     $total_incorrect = 0;
     $total_questions = 0;
     $quiznumber = -1;
+    $dbanswers = [];
     $useranswers = [];
 
     $quiz_title = $_GET['quiz-title'];
@@ -39,11 +40,16 @@
         echo "Error connecting to database: " . mysqli_connect_error();
     } else {
         $querysql = "SELECT question_num, choice_text FROM answer_choice 
-                     WHERE quiz_id = $quiznumber AND correct = 1
+                     WHERE quiz_id = ? AND correct = 1
                      ORDER BY question_num";
-        $query_result = mysqli_query($dbconn, $querysql);
-        $dbanswers = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
-        //echo print_r($dbanswers);
+        $stmt = mysqli_stmt_init($dbconn);
+        if(mysqli_stmt_prepare($stmt, $querysql)){
+            mysqli_stmt_bind_param($stmt, "i", $quiznumber);
+            if(mysqli_stmt_execute($stmt)){
+                $result = mysqli_stmt_get_result($stmt);
+                $dbanswers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            }
+        }
     }
 
     mysqli_close($dbconn);
