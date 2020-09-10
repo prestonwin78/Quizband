@@ -23,10 +23,16 @@
          //Get questions
         $querysql = "SELECT question_num, text, answer_choice_num, choice_text
                      FROM question NATURAL JOIN answer_choice
-                     WHERE quiz_id = $quiz_id ORDER BY question_num";
-        $query_result = mysqli_query($dbconn, $querysql);
-        $dbquestions = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
-        mysqli_free_result($query_result);
+                     WHERE quiz_id = ? ORDER BY question_num";
+        $stmt = mysqli_stmt_init($dbconn);
+        if(mysqli_stmt_prepare($stmt, $querysql)){
+            mysqli_stmt_bind_param($stmt, "i", $quiz_id);
+            if(mysqli_stmt_execute($stmt)){
+                $result = mysqli_stmt_get_result($stmt);
+                $dbquestions = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                mysqli_free_result($result);
+            }
+        }
 
         /*  Build answer choices array in form of
             choices[questionNum][answerChoiceNum] == choice text
@@ -39,15 +45,21 @@
 
         //Get title, subject of quiz
         $title_query = "SELECT title, subject from quiz
-                        WHERE quiz_id = $quiz_id";
-        $title_result = mysqli_query($dbconn, $title_query);
-        $result_arr = mysqli_fetch_assoc($title_result);
-        $quiz_title = $result_arr['title'];
-        $quiz_subject = $result_arr['subject'];
-        mysqli_free_result($title_result);
-        
-        mysqli_close($dbconn);
+                        WHERE quiz_id = ?";
+        $stmt = mysqli_stmt_init($dbconn);
+        if(mysqli_stmt_prepare($stmt, $title_query)){
+            mysqli_stmt_bind_param($stmt, "i", $quiz_id);
+            if(mysqli_stmt_execute($stmt)){
+                $title_result = mysqli_stmt_get_result($stmt);
+                $result_arr = mysqli_fetch_assoc($title_result);
+                $quiz_title = $result_arr['title'];
+                $quiz_subject = $result_arr['subject'];
+                mysqli_free_result($title_result);
+            }
+        }
      }
+
+     mysqli_close($dbconn);
 ?>
 
 <!DOCTYPE html>
