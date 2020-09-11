@@ -97,12 +97,12 @@
                 <div class="col-4">
                     <div class="score-box">
                         <div class="quiz-score-box">
-                            <h5><?php echo $quiz_title; ?></h5>
-                            <h6 class="tag tag-<?php echo $quiz_subject; ?> text-dark"><?php echo $quiz_subject; ?></h6>
+                            <h5><?php echo htmlspecialchars($quiz_title); ?></h5>
+                            <h6 class="tag tag-<?php echo htmlspecialchars($quiz_subject); ?> text-dark"><?php echo htmlspecialchars($quiz_subject); ?></h6>
                         </div>
                         <div class="score-score-box">
                             <h6>Your score:</h6>
-                            <h1 id="score" class="text-dark"><?php echo $score?>%</h1>
+                            <h1 id="score" class="text-dark"><?php echo htmlspecialchars($score);?>%</h1>
                         </div>
                     </div>
                 </div>

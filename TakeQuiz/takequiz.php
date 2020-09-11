@@ -86,7 +86,7 @@
         </div>
         <div class="row main-section">
             <div class="col-12 text-center">
-                <h1 id="create-quiz-text"><?php echo $quiz_title; ?></h1>
+                <h1 id="create-quiz-text"><?php echo htmlspecialchars($quiz_title); ?></h1>
             </div>
         </div>
         
@@ -95,12 +95,12 @@
                 <div class="row main-section">
                     <div class="col-3"></div>
                     <div class="col-6 quizcard bg-light">
-                        <h2 class="question-text"><?php echo $questions[$i];?></h2>
+                        <h2 class="question-text"><?php echo htmlspecialchars($questions[$i]);?></h2>
                         <div class="answer-options">
                             <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
                                 <div class="answer-choice">                                         
-                                    <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo $choices[$i][$j];?>">
-                                    <label for="<?php echo "q" . $i . "a" . $j;?>"><?php echo $choices[$i][$j]?></label>
+                                    <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
+                                    <label for="<?php echo "q" . $i . "a" . $j;?>"><?php echo htmlspecialchars($choices[$i][$j]);?></label>
                                 </div>
                             <?php } ?>
                         </div>

@@ -151,9 +151,9 @@
                         <div class="row">
                             <div class="card quiz-card">
                                 <div class="card-body">
-                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo $q_id;?>"><?= $q_data['title'] ?></a>
-                                    <p class="card-text"><?= $q_data['description'] ?></p>
-                                    <h6 class="tag tag-<?php echo $q_data['subject']; ?>"><?= $q_data['subject'] ?></h6>
+                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo htmlspecialchars($q_id);?>"><?= htmlspecialchars($q_data['title']) ?></a>
+                                    <p class="card-text"><?= htmlspecialchars($q_data['description']) ?></p>
+                                    <h6 class="tag tag-<?php echo htmlspecialchars($q_data['subject']); ?>"><?= htmlspecialchars($q_data['subject']) ?></h6>
                                 </div>
                             </div>
                         </div>

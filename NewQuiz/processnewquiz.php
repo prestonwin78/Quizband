@@ -140,12 +140,12 @@
                 <div class="col-8 col-lg-4">
                     <div class="score-box">
                         <div class="quiz-score-box">
-                            <h5><?php echo $quiz_title; ?></h5>
-                            <h6 class="tag tag-Math text-dark"><?php echo $quiz_subject; ?></h6>
+                            <h5><?php echo htmlspecialchars($quiz_title); ?></h5>
+                            <h6 class="tag tag-Math text-dark"><?php echo htmlspecialchars($quiz_subject); ?></h6>
                         </div>
                         <div class="score-score-box">
                             <h6 class="text-secondary font-weight-normal">Quiz ID:</h6>
-                            <h1 id="score" class="text-dark"><?php echo $quiz_id; ?></h1>
+                            <h1 id="score" class="text-dark"><?php echo htmlspecialchars($quiz_id); ?></h1>
                         </div>
                     </div>
                 </div>
