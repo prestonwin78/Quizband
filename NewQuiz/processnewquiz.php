@@ -24,6 +24,7 @@
             }
         }
 
+        /*
         echo "Title: " . $quiz_title . "</br></br>";
         echo "Questions: </br>";
         echo print_r($questions);
@@ -33,7 +34,7 @@
         echo "</br></br>";
         echo "Answers: </br>";
         echo print_r($answers);
-
+        */
 
 
         /* If query is valid, connect to database and insert quiz data */
@@ -111,3 +112,52 @@
         mysqli_close($dbconn);
     }
 ?>
+
+<!-- show ID back to user -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quizband</title>
+        
+        <!-- Bootstrap -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../styles.css">
+        <link rel="stylesheet" type="text/css" href="./process-styles.css">
+    </head>
+    <body>
+        <div id="main-content" class="container-fluid">
+            <div id="header" class="row bg-light">
+            <a id="title" class="text-dark" href="../home.php">Quizband</a>
+                <a>Contact</a>
+                <a>About</a>
+                <a>Sign In</a>
+            </div>
+            <div class="row">
+                <div class="col-2 col-lg-4"></div>
+                <div class="col-8 col-lg-4">
+                    <div class="score-box">
+                        <div class="quiz-score-box">
+                            <h5><?php echo $quiz_title; ?></h5>
+                            <h6 class="tag tag-Math text-dark"><?php echo $quiz_subject; ?></h6>
+                        </div>
+                        <div class="score-score-box">
+                            <h6 class="text-secondary font-weight-normal">Quiz ID:</h6>
+                            <h1 id="score" class="text-dark"><?php echo $quiz_id; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2 col-lg-4"></div>
+                <div class="col-8 col-lg-4">
+                    <div class="button-container text-center">
+                        <button onclick="window.location.href='../home.php'" type="button" 
+                            class="btn btn-light home-button">Back to home page</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>

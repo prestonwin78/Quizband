@@ -24,4 +24,10 @@ function addQuestion(event){
     questionSection.appendChild(newElem);
 }
 
+function redirectHome(event){
+    event.preventDefault();
+    window.location.href='../home.php';
+}
+
 document.getElementById("addquiz").addEventListener('click', addQuestion);
+document.getElementById("cancel").addEventListener('click', redirectHome);
