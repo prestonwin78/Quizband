@@ -29,3 +29,16 @@ h2 {
     padding: 0;
     font-size: 1.5rem !important;
 }
+
+#id-container{
+    margin: 0 3rem 2rem 3rem;
+    padding: 0;
+    width: 80%;
+}
+
+#id-container input[type="text"]{
+    width: 100%;
+    padding: .5rem;
+    border-radius: .25rem;
+    border: 1px solid rgba(0, 0, 0, 12.5%);
+}

@@ -138,6 +138,14 @@
                         <h2 class="text-light">Take a Quiz</h2>
                     </div>
 
+                    <div class="row">
+                        <div id="id-container" class="col">
+                            <form action="./TakeQuiz/takequiz.php">
+                                <input type="text" id="quiz-by-id" name="quiz_id" placeholder="By ID"></input>
+                            </form>
+                        </div>
+                    </div>
+
                     <?php foreach($quizzes as $q_id => $q_data){ ?>
 
                         <div class="row">
