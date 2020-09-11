@@ -1,0 +1,27 @@
+.score-box {
+    width: 80%;
+    background-color: white;
+    padding: 0;
+    margin: 40% auto 20% auto;
+    border-radius: .5rem;
+}
+
+.quiz-score-box, .score-score-box {
+    padding: .25rem .5rem;
+}
+
+.quiz-score-box {
+    width: 100%;
+    background-color: hsl(281, 20%, 40%);
+    color: white;
+    border-radius: .5rem;
+}
+
+.score-score-box {
+    text-align: center;
+    width: 100%;
+}
+
+.home-button {
+    border-radius: 50px;    /* make pill */
+}
