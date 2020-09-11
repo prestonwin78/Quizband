@@ -5,7 +5,7 @@
     font-family: sans-serif;
     border: 1px solid transparent;
     border-radius: .5rem;
-    margin: 1rem 0;
+    margin-top: 1rem;
 }
 
 #quiz-title:hover {
@@ -16,6 +16,13 @@
     border: 1px solid gray;
 }
 
+.quizcard {
+    border-radius: 5px;
+    border-color: gray;
+    padding: 1em 1.5em;
+    margin-bottom: 2rem;
+    margin-top: 2rem; 
+}
 
 .answer-choice input[type="radio"]{
     display: inline-block;
@@ -40,4 +47,22 @@
     margin: 2em 0;
     padding: .5rem 1rem;
     border-radius: 50%;
+}
+
+#quiz-description, #quiz-subject {
+    background: none;
+    border: 2px solid hsla(0, 0%, 0%, 30%);
+    border-radius: .25rem;
+    margin: 1rem 0;
+    padding: .5rem;
+    font-size: 1rem;
+    width: 50%;
+}
+
+#quiz-subject {
+    margin-bottom: 3rem;
+}
+
+::placeholder {
+    color: hsla(0, 0%, 100%, 80%);
 }

@@ -1,6 +1,8 @@
 .quizcard {
     border-radius: 5px;
     border-color: gray;
+    padding: 1em 1.5em;
+    margin-bottom: 4rem;
 }
 
 #blank-row {
@@ -10,11 +12,6 @@
 
 #create-quiz-text {
     margin: .5em; 
-}
-
-.quizcard {
-    padding: 1em 1.5em;
-    margin-bottom: 4rem;
 }
 
 #submit {

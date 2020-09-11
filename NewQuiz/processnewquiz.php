@@ -2,6 +2,8 @@
     $questions = [];
     $answer_choices = [];
     $quiz_title = "";
+    $quiz_description = "No Description";
+    $quiz_subject = "No Subject";
     $answers = [];
     $quiz_id = null;
     $user_id = 1;
@@ -9,8 +11,8 @@
     if(isset($_GET['quiz-title'])){
 
         $quiz_title = $_GET['quiz-title'];
-        $quiz_description = 'No description';
-        $quiz_subject = "None";
+        $quiz_description = $_GET['quiz-description'];
+        $quiz_subject = $_GET['quiz-subject'];
 
         foreach($_GET as $key => $value) {
             if(preg_match('/question[1-9]answer/', $key)){
