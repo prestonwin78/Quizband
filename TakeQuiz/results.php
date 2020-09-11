@@ -33,7 +33,7 @@
     } 
 
     //connect to database
-    $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
+    $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
 
     //check connection
     if(!$dbconn){

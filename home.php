@@ -3,7 +3,7 @@
     $quizzes = main();
 
     function main(){
-        $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
+        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
         if(!$dbconn){
             echo "error connecting";
         }

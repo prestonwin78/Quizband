@@ -37,7 +37,7 @@
 
 
         /* If query is valid, connect to database and insert quiz data */
-        $dbconn = mysqli_connect("localhost", "testuser1", "pass123", "quizband");
+        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
 
 
 
