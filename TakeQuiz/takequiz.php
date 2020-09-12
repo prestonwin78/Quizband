@@ -2,10 +2,11 @@
      
      $quiz_id = null;
 
-     if(isset($_GET['quiz_id'])){
+     if(!empty($_GET['quiz_id'])){
         $quiz_id = $_GET['quiz_id'];
      } else {
-         echo "error";
+        echo "error";
+        // TODO: add redirect
      }
      
      $dbquestions = [];
@@ -16,11 +17,12 @@
      
      $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
      
-     //check connection
+     // check connection
      if(!$dbconn){
          echo "Error connecting to database: " . mysqli_connect_error();
-     } else {
-         //Get questions
+         // TODO: add redirect
+        } else {
+         //Get questions 
         $querysql = "SELECT question_num, text, answer_choice_num, choice_text
                      FROM question NATURAL JOIN answer_choice
                      WHERE quiz_id = ? ORDER BY question_num";
@@ -35,15 +37,15 @@
         }
 
         /*  Build answer choices array in form of
-            choices[questionNum][answerChoiceNum] == choice text
+            choices[questionNum][answerChoiceNum] === choice text
             Build questions array in form of 
-            questions[questionNum] = question text  */
+            questions[questionNum] === question text  */
         foreach ($dbquestions as $row){
             $choices[$row['question_num']][$row['answer_choice_num']] = $row['choice_text'];
             $questions[$row['question_num']] = $row['text'];
         }
 
-        //Get title, subject of quiz
+        // Get title, subject of quiz
         $title_query = "SELECT title, subject from quiz
                         WHERE quiz_id = ?";
         $stmt = mysqli_stmt_init($dbconn);
@@ -59,7 +61,7 @@
         }
      }
 
-     mysqli_close($dbconn);
+     mysqli_close($dbconn); // close connection
 ?>
 
 <!DOCTYPE html>
@@ -91,28 +93,39 @@
         </div>
         
         <form action="results.php" method="post">
+
+            <!-- Dynamically add a card for each question -->
+
             <?php for($i = 1; $i <= sizeof($choices); $i++){ ?>
                 <div class="row main-section">
                     <div class="col-3"></div>
                     <div class="col-6 quizcard bg-light">
                         <h2 class="question-text"><?php echo htmlspecialchars($questions[$i]);?></h2>
                         <div class="answer-options">
+
+                            <!-- build answer choices -->
+
                             <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
                                 <div class="answer-choice">                                         
                                     <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
                                     <label for="<?php echo "q" . $i . "a" . $j;?>"><?php echo htmlspecialchars($choices[$i][$j]);?></label>
                                 </div>
                             <?php } ?>
+
+                            <!-- end answer choices -->
+
                         </div>
                     </div>
                 <div class="col-3"></div>
             </div>
             <?php } ?>
+
+            <!-- end card section -->
             
             <div class="row main-section">
                 <div class="col-6"></div>
                 <div class="col-6">
-                    <button id="cancel" class="btn btn-light">Cancel</button>
+                    <button id="cancel" class="btn btn-light" onclick="event.preventDefault(); window.location.href = '../home.php';">Cancel</button>
                     <button id="submit" class="btn btn-primary shadow">Submit</button>
                 </div>
             </div>

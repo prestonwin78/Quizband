@@ -6,7 +6,7 @@
     $quiz_subject = "No Subject";
     $answers = [];
     $quiz_id = null;
-    $user_id = 1;
+    $user_id = 1;   // needs to be set earlier
 
     if(isset($_POST['quiz-title'])){
 
@@ -14,16 +14,23 @@
         $quiz_description = $_POST['quiz-description'];
         $quiz_subject = $_POST['quiz-subject'];
 
+        // go through post array and store submitted values
+        // based on the key:
         foreach($_POST as $key => $value) {
             if(preg_match('/question[1-9]answer/', $key)){
-                $answers[$key[8]] = $value[3];
+                // question num is stored at 9th character of key
+                // answer num is stored at 4th character of value
+                $answers[$key[8]] = $value[3];          
             } else if(preg_match('/question[1-9]/', $key)){
                 $questions[$key[8]] = $value;
             } else if(preg_match('/q[1-9]a[1-9]text/', $key)){
+                // the key is, for example, 'q4a5 - answer choice 5
+                // for question 4
                 $answer_choices[$key[1]][$key[3]] = $value;
             }
         }
 
+        //Uncomment to see information passed in
         /*
         echo "Title: " . $quiz_title . "</br></br>";
         echo "Questions: </br>";
@@ -42,6 +49,8 @@
 
 
 
+        // Make quiz query to insert a new quiz
+
         /*  quiz: (quiz_id, title, description, subject, creator) */
         $insert_quiz_query = "INSERT INTO quiz (title, description, subject, creator)
                               VALUES (?, ?, ?, ?)";
@@ -58,6 +67,10 @@
             //get the last AUTO INCREMENT value from the database
             $quiz_id = mysqli_insert_id($dbconn);  
         }
+        
+
+
+        // Make question queries to insert each question
 
         /*  question: (question_num, quiz_id, text) */
         $insert_question_query = "INSERT INTO question
@@ -77,6 +90,9 @@
                 mysqli_stmt_execute($stmt);
             }
         }
+
+
+        // Make answer choice queries to input each answer choice
 
         /*  answer_choice: (question_num, quiz_id, 
             answer_choice_num, choice_text, correct )*/
@@ -99,6 +115,8 @@
             foreach($answer_choices as $q_num => $c_arr){
                 foreach($c_arr as $c_num => $c_text){
                     $correct = 0;   //False
+
+                    //Check if answer choice has been set to correct
                     if($c_num == $answers[$q_num]){
                         $correct = 1;   //True
                     }
