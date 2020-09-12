@@ -90,7 +90,7 @@
             </div>
         </div>
         
-        <form action="results.php">
+        <form action="results.php" method="post">
             <?php for($i = 1; $i <= sizeof($choices); $i++){ ?>
                 <div class="row main-section">
                     <div class="col-3"></div>

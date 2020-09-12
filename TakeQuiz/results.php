@@ -3,7 +3,7 @@
     //Compare results with form data
     //Calculate score
     //TODO: Store user's results in database
-    //echo print_r($_GET);
+    //echo print_r($_POST);
 
     //echo "</br></br>";
 
@@ -15,16 +15,16 @@
     $dbanswers = [];
     $useranswers = [];
 
-    $quiz_title = $_GET['quiz-title'];
-    $quiz_subject = $_GET['quiz-subject'];
+    $quiz_title = $_POST['quiz-title'];
+    $quiz_subject = $_POST['quiz-subject'];
 
-    if(isset($_GET)){
-        $quiznumber = $_GET['quizid'];
+    if(isset($_POST)){
+        $quiznumber = $_POST['quizid'];
 
         //Build useranswers array from form array
-        // $_GET = { question1 => 'Belarus' question2 => 'Jefferson'}
+        // $_POST = { question1 => 'Belarus' question2 => 'Jefferson'}
         // useranswers = { 1 => 'Belarus' 2 => 'Washington'}
-        foreach ($_GET as $key => $elem){
+        foreach ($_POST as $key => $elem){
             if(strlen($key) > 8 && substr($key, 0, 8) === 'question'){
                 //$key[8] holds number after 'question' in key
                 $useranswers[$key[8]] = $elem;

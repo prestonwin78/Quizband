@@ -8,13 +8,13 @@
     $quiz_id = null;
     $user_id = 1;
 
-    if(isset($_GET['quiz-title'])){
+    if(isset($_POST['quiz-title'])){
 
-        $quiz_title = $_GET['quiz-title'];
-        $quiz_description = $_GET['quiz-description'];
-        $quiz_subject = $_GET['quiz-subject'];
+        $quiz_title = $_POST['quiz-title'];
+        $quiz_description = $_POST['quiz-description'];
+        $quiz_subject = $_POST['quiz-subject'];
 
-        foreach($_GET as $key => $value) {
+        foreach($_POST as $key => $value) {
             if(preg_match('/question[1-9]answer/', $key)){
                 $answers[$key[8]] = $value[3];
             } else if(preg_match('/question[1-9]/', $key)){
@@ -52,8 +52,8 @@
         } else {
             mysqli_stmt_bind_param($stmt, "ssss", 
                         $quiz_title, $quiz_description, $quiz_subject, $user_id);
-            echo "</br></br>";
-            echo "quiz_title: $quiz_title, $quiz_description, $quiz_subject, $user_id </br>";
+            //echo "</br></br>";
+            //echo "quiz_title: $quiz_title, $quiz_description, $quiz_subject, $user_id </br>";
             mysqli_stmt_execute($stmt);
             //get the last AUTO INCREMENT value from the database
             $quiz_id = mysqli_insert_id($dbconn);  
@@ -71,9 +71,9 @@
             $q_text = "";
 
             mysqli_stmt_bind_param($stmt, "sss", $q_num, $quiz_id, $q_text);
-            echo "</br></br>";
+            //echo "</br></br>";
             foreach($questions as $q_num => $q_text){
-                echo "q_num: $q_num, quiz_id: $quiz_id, q_text: $q_text </br>";
+                //echo "q_num: $q_num, quiz_id: $quiz_id, q_text: $q_text </br>";
                 mysqli_stmt_execute($stmt);
             }
         }
@@ -95,7 +95,7 @@
 
             mysqli_stmt_bind_param($stmt, "sssss",
                         $q_num, $quiz_id, $c_num, $c_text, $correct);
-            echo "</br></br>";
+            //echo "</br></br>";
             foreach($answer_choices as $q_num => $c_arr){
                 foreach($c_arr as $c_num => $c_text){
                     $correct = 0;   //False
@@ -103,7 +103,7 @@
                         $correct = 1;   //True
                     }
                     
-                    echo "q_num: $q_num, quiz_id: $quiz_id, c_num: $c_num, c_text: $c_text, correct: $correct </br>";
+                    //echo "q_num: $q_num, quiz_id: $quiz_id, c_num: $c_num, c_text: $c_text, correct: $correct </br>";
                     mysqli_stmt_execute($stmt);
                 }
             }
