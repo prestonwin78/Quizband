@@ -1,27 +1,22 @@
 <?php 
-    // TODO: Store user's results in database
-    // echo print_r($_POST);
 
     // Calculate and output results of the quiz
 
     $score = 0;
-    $total_correct = 0;
-    $total_incorrect = 0;
-    $total_questions = 0;
-    $quiznumber = -1;
-    $dbanswers = [];
-    $useranswers = [];
-
     $quiz_title = "";
     $quiz_subject = "";
 
-    if(!empty($_POST)){
-        $quiznumber = $_POST['quizid'];
+    if( empty($_POST['quizid']) || empty($_POST['quiz-title']) 
+        || empty($_POST['quiz-subject']) ){
+        echo "Error";
+    } else {
+        $quiz_id = $_POST['quizid'];
         $quiz_title = $_POST['quiz-title'];
         $quiz_subject = $_POST['quiz-subject'];
+        $useranswers = [];
 
         // Build useranswers array from form array
-        //   $_POST = { question1 => 'Belarus' question2 => 'Jefferson'}
+        //   $_POST = { question1 => 'Belarus', question2 => 'Jefferson'}
         //   useranswers = { 1 => 'Belarus' 2 => 'Washington'}
         foreach ($_POST as $key => $elem){
             if(strlen($key) > 8 && substr($key, 0, 8) === 'question'){
@@ -29,48 +24,71 @@
                 $useranswers[$key[8]] = $elem;
             }
         }
+
+        // connect to database
+        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+
+        // check connection
+        if($dbconn){
+            //process score
+            $dbanswers = getAnswersFromDatabase($dbconn, $quiz_id);
+            $score = processScore($dbanswers, $useranswers);
+        } else {
+            echo "Error connecting to database: " . mysqli_connect_error();
+        }
+
+        mysqli_close($dbconn);
     } 
 
-    // connect to database
-    $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+    
 
-    // check connection
-    if(!$dbconn){
-        echo "Error connecting to database: " . mysqli_connect_error();
-    } else {
-        // get correct answer choices corresponding to the quiz from the database
-        //      in the form [questionnum] => "Correct choice text"
+    // get correct answer choices corresponding to the quiz from the database
+    //      in the form [questionnum] => "Correct choice text"
+    function getAnswersFromDatabase($dbconn, $quiz_id){
         $querysql = "SELECT question_num, choice_text FROM answer_choice 
                      WHERE quiz_id = ? AND correct = 1
                      ORDER BY question_num";
         $stmt = mysqli_stmt_init($dbconn);
         if(mysqli_stmt_prepare($stmt, $querysql)){
-            mysqli_stmt_bind_param($stmt, "i", $quiznumber);
+            mysqli_stmt_bind_param($stmt, "i", $quiz_id);
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
-                $dbanswers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                return mysqli_fetch_all($result, MYSQLI_ASSOC);
             }
         }
     }
 
-    mysqli_close($dbconn);
+    
 
-    $total_questions = sizeof($dbanswers);
-
-    // Get the total number of correct and incorrect answers
-    //   - For each question, check if the correct answer text
-    //     is equal to the text submitted by the user
-    foreach ($dbanswers as $question){
-        $question_num = $question['question_num'];
-        if($question['choice_text'] === $useranswers[$question_num]){
-            $total_correct++;
-        } else {
-            $total_incorrect++;
-        }
+    // gets score in percentage 
+    function processScore($dbanswers, $useranswers){
+        $total_questions = sizeof($dbanswers);
+        $total_correct = getNumCorrect($dbanswers, $useranswers);
+    
+        //Calculate score to 0 decimal places
+        return floor($total_correct / $total_questions * 100);
     }
 
-    //Calculate score to 0 decimal places
-    $score = floor($total_correct / $total_questions * 100);
+
+
+    // Helper function for processScore - 
+    //      gets the amount of correct answers based on 
+    //      user answers
+    function getNumCorrect($dbanswers, $useranswers) {
+        // Get the total number of correct answers
+        //   - For each question, check if the correct answer text
+        //     is equal to the text submitted by the user
+        $total_correct = 0;
+
+        foreach ($dbanswers as $question){
+            $question_num = $question['question_num'];
+            if($question['choice_text'] === $useranswers[$question_num]){
+                $total_correct++;
+            } 
+        }
+
+        return $total_correct;
+    }
 ?>
 
 <!-- Output score and other relevant data -->

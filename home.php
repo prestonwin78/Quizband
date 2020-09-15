@@ -43,6 +43,7 @@
         $result = mysqli_query($dbconn, $query);
         if(!$result){   
             echo "Error";
+            return 0;
         } else {
             return mysqli_fetch_row($result)[0];
         }
