@@ -1,54 +1,94 @@
 <?php 
      
-     $quiz_id = null;
+    $dbquestions = [];
+    $questions = [];
+    $choices = [];
+    $quiz_id = -1;       //passed to results page
+    $quiz_title = "";
+    $quiz_subject = "";
 
-     if(!empty($_GET['quiz_id'])){
+    if(!empty($_GET['quiz_id'])){
         $quiz_id = $_GET['quiz_id'];
-     } else {
-        echo "error";
-        // TODO: add redirect
-     }
+
+        // Connect to database
+        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
      
-     $dbquestions = [];
-     $questions = [];
-     $choices = [];
-     $quiz_title = "";
-     $quiz_subject = "";
-     
-     $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
-     
-     // check connection
-     if(!$dbconn){
-         echo "Error connecting to database: " . mysqli_connect_error();
-         // TODO: add redirect
+        // check connection
+        if($dbconn){
+            $quiz_arr = getQuestionsAndAnswers($dbconn, $quiz_id);
+            $questions = $quiz_arr['questions'];    // an array of questions
+            $choices = $quiz_arr['answer_choices']; // an array of answer choices
+
+            $temp = getTitleAndSubject($dbconn, $quiz_id);
+            $quiz_title = $temp['title'];           // the quiz title string 
+            $quiz_subject = $temp['subject'];       // the quiz subject string
+            
         } else {
-         //Get questions 
+            echo "Error connecting to database: " . mysqli_connect_error();
+        }   
+
+        mysqli_close($dbconn); // close connection
+    } else {
+        echo "error";
+    }
+
+     
+
+
+    // Returns two arrays:
+    //     first contains quiz questions
+    //     second contains answer choices
+    function getQuestionsAndAnswers($dbconn, $quiz_id){
         $querysql = "SELECT question_num, text, answer_choice_num, choice_text
                      FROM question NATURAL JOIN answer_choice
                      WHERE quiz_id = ? ORDER BY question_num";
         $stmt = mysqli_stmt_init($dbconn);
+        $dbquestions = null;
         if(mysqli_stmt_prepare($stmt, $querysql)){
             mysqli_stmt_bind_param($stmt, "i", $quiz_id);
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
                 $dbquestions = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 mysqli_free_result($result);
+                return buildQuizArray($dbquestions);
+            } else {
+                echo "Error executing query";
             }
+        } else {
+            echo "Error preparing statement";
         }
+    }
 
-        /*  Build answer choices array in form of
+
+
+     /*  Build answer choices array in form of
             choices[questionNum][answerChoiceNum] === choice text
             Build questions array in form of 
             questions[questionNum] === question text  */
+     function buildQuizArray($dbquestions){
+        $questions = [];
+        $answer_choices = [];
         foreach ($dbquestions as $row){
-            $choices[$row['question_num']][$row['answer_choice_num']] = $row['choice_text'];
+            $answer_choices[$row['question_num']][$row['answer_choice_num']] = $row['choice_text'];
             $questions[$row['question_num']] = $row['text'];
         }
+        return array(
+            'questions' => $questions, 
+            'answer_choices' => $answer_choices
+        );
+     }
 
+
+
+     // Returns an array containing the quiz title and subject
+     function getTitleAndSubject($dbconn, $quiz_id){
         // Get title, subject of quiz
         $title_query = "SELECT title, subject from quiz
                         WHERE quiz_id = ?";
         $stmt = mysqli_stmt_init($dbconn);
+
+        $quiz_title = "";
+        $quiz_subject = "";
         if(mysqli_stmt_prepare($stmt, $title_query)){
             mysqli_stmt_bind_param($stmt, "i", $quiz_id);
             if(mysqli_stmt_execute($stmt)){
@@ -59,9 +99,11 @@
                 mysqli_free_result($title_result);
             }
         }
+        return array(
+            'title' => $quiz_title,
+            'subject' => $quiz_subject
+        );
      }
-
-     mysqli_close($dbconn); // close connection
 ?>
 
 <!DOCTYPE html>
