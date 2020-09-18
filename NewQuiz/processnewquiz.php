@@ -1,10 +1,6 @@
 <?php 
-    $questions = [];
-    $answer_choices = [];
     $quiz_title = "";
-    $quiz_description = "No Description";
     $quiz_subject = "No Subject";
-    $answers = [];
     $quiz_id = null;
     $user_id = 1;   // needs to be set earlier
 
@@ -14,8 +10,32 @@
         $quiz_description = $_POST['quiz-description'];
         $quiz_subject = $_POST['quiz-subject'];
 
+        $quiz_arr = getArraysFromPOST();
+        $answers = $quiz_arr['answers'];
+        $questions = $quiz_arr['questions'];
+        $answer_choices = $quiz_arr['answer_choices'];
+
+
+        /* If query is valid, connect to database and insert quiz data */
+
+        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+
+        if($dbconn){
+            $quiz_id = insertQuizInDatabase($dbconn, $quiz_title, $quiz_description, $quiz_subject, $user_id);
+            insertQuestionsInDatabase($dbconn, $quiz_id, $questions);
+            insertAnswerChoicesIntoDatabase($dbconn, $quiz_id, $answer_choices, $answers);
+        }
+
+        mysqli_close($dbconn);
+    }
+
+
+    function getArraysFromPOST(){
         // go through post array and store submitted values
         // based on the key:
+        $answers = [];
+        $questions = [];
+        $answer_choices = [];
         foreach($_POST as $key => $value) {
             if(preg_match('/question[1-9]answer/', $key)){
                 // question num is stored at 9th character of key
@@ -29,52 +49,40 @@
                 $answer_choices[$key[1]][$key[3]] = $value;
             }
         }
-
-        //Uncomment to see information passed in
-        /*
-        echo "Title: " . $quiz_title . "</br></br>";
-        echo "Questions: </br>";
-        echo print_r($questions);
-        echo "</br></br>";
-        echo "Answer_choices: </br>";
-        echo print_r($answer_choices);
-        echo "</br></br>";
-        echo "Answers: </br>";
-        echo print_r($answers);
-        */
+        return array(   
+            'answers' => $answers,
+            'questions' => $questions,
+            'answer_choices' => $answer_choices
+        );
+    }
 
 
-        /* If query is valid, connect to database and insert quiz data */
-        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
-
-
-
-        // Make quiz query to insert a new quiz
-
-        /*  quiz: (quiz_id, title, description, subject, creator) */
+    // Inserts a new quiz entity in the database and returns the quiz ID generated
+    function insertQuizInDatabase($dbconn, $quiz_title, $quiz_description, $quiz_subject, $user_id){
+        /*  Make quiz query to insert a new quiz 
+            quiz: (quiz_id, title, description, subject, creator) */
         $insert_quiz_query = "INSERT INTO quiz (title, description, subject, creator)
-                              VALUES (?, ?, ?, ?)";
+                            VALUES (?, ?, ?, ?)";
         $stmt = mysqli_stmt_init($dbconn);
-
+        $quiz_id = null;
         if(!mysqli_stmt_prepare($stmt, $insert_quiz_query)){
             echo "error";
         } else {
             mysqli_stmt_bind_param($stmt, "ssss", 
                         $quiz_title, $quiz_description, $quiz_subject, $user_id);
-            //echo "</br></br>";
-            //echo "quiz_title: $quiz_title, $quiz_description, $quiz_subject, $user_id </br>";
             mysqli_stmt_execute($stmt);
             //get the last AUTO INCREMENT value from the database
             $quiz_id = mysqli_insert_id($dbconn);  
         }
-        
+        return $quiz_id;
+    }
 
 
-        // Make question queries to insert each question
-
-        /*  question: (question_num, quiz_id, text) */
+    function insertQuestionsInDatabase($dbconn, $quiz_id, $questions){
+        /*  Make question query to insert each question
+            question: (question_num, quiz_id, text) */
         $insert_question_query = "INSERT INTO question
-                                  VALUES (?, ?, ?)";
+                                VALUES (?, ?, ?)";
         $stmt = mysqli_stmt_init($dbconn);
 
         if(!mysqli_stmt_prepare($stmt, $insert_question_query)){
@@ -84,20 +92,20 @@
             $q_text = "";
 
             mysqli_stmt_bind_param($stmt, "sss", $q_num, $quiz_id, $q_text);
-            //echo "</br></br>";
+            
             foreach($questions as $q_num => $q_text){
-                //echo "q_num: $q_num, quiz_id: $quiz_id, q_text: $q_text </br>";
                 mysqli_stmt_execute($stmt);
             }
         }
+    }
 
 
-        // Make answer choice queries to input each answer choice
-
-        /*  answer_choice: (question_num, quiz_id, 
-            answer_choice_num, choice_text, correct )*/
+    function insertAnswerChoicesIntoDatabase($dbconn, $quiz_id, $answer_choices, $answers){
+        /* Make answer choice queries to input each answer choice
+            answer_choice: (question_num, quiz_id, 
+            answer_choice_num, choice_text, correct ) */
         $insert_answer_choice_query = "INSERT INTO answer_choice 
-                                       VALUES (?, ?, ?, ?, ?)";
+                                    VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_stmt_init($dbconn);
 
         if(!mysqli_stmt_prepare($stmt, $insert_answer_choice_query)){
@@ -111,7 +119,7 @@
 
             mysqli_stmt_bind_param($stmt, "sssss",
                         $q_num, $quiz_id, $c_num, $c_text, $correct);
-            //echo "</br></br>";
+           
             foreach($answer_choices as $q_num => $c_arr){
                 foreach($c_arr as $c_num => $c_text){
                     $correct = 0;   //False
@@ -121,14 +129,13 @@
                         $correct = 1;   //True
                     }
                     
-                    //echo "q_num: $q_num, quiz_id: $quiz_id, c_num: $c_num, c_text: $c_text, correct: $correct </br>";
                     mysqli_stmt_execute($stmt);
                 }
             }
         }
-
-        mysqli_close($dbconn);
     }
+
+
 ?>
 
 <!-- show ID back to user -->
