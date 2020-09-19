@@ -75,11 +75,10 @@
     //      gets the amount of correct answers based on 
     //      user answers
     function getNumCorrect($dbanswers, $useranswers) {
-        // Get the total number of correct answers
-        //   - For each question, check if the correct answer text
-        //     is equal to the text submitted by the user
         $total_correct = 0;
 
+        //For each question, check if the correct answer text
+        //is equal to the text submitted by the user
         foreach ($dbanswers as $question){
             $question_num = $question['question_num'];
             if($question['choice_text'] === $useranswers[$question_num]){

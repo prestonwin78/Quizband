@@ -5,10 +5,15 @@
     $user_id = 1;   // needs to be set earlier
 
     if(isset($_POST['quiz-title'])){
-
-        $quiz_title = $_POST['quiz-title'];
-        $quiz_description = $_POST['quiz-description'];
-        $quiz_subject = $_POST['quiz-subject'];
+        $quiz_title = $_POST['quiz-title']; 
+        $quiz_description = "No Description"; // default value
+        if(isset($_POST['quiz-description'])){
+            $quiz_description = $_POST['quiz-description'];
+        }
+        if(isset($_POST['quiz-subject'])){
+            $quiz_subject = $_POST['quiz-subject'];
+        }
+        
 
         $quiz_arr = getArraysFromPOST();
         $answers = $quiz_arr['answers'];
