@@ -16,6 +16,10 @@ a, b {
     display: inline-block;
 }
 
+#header a {
+    color: inherit;
+}
+
 
 .info-container {
     background-color: white;
