@@ -7,15 +7,35 @@
 .header-container{
   width: 100%;
   text-align: center;
+  padding: 2rem;
 }
 
 .signup-card h1 {
   font-size: 2rem;
-  margin: 5% 0;
 }
 
 .input-block {
-  padding: 5% 5% 0 5%;
-  margin: 5% 5% 0 5%;
+  padding: 0 5% 2.5% 5%;
+  margin: 0 5% 2.5% 5%;
 }
 
+.input-block input {
+  border-radius: 0;
+  border: 1px solid gray;
+  padding: .5rem;
+  width: 100%;
+}
+
+.submit, .cancel {
+  width: 30%;
+  padding: .5rem 1rem;
+  margin-right: 5%;
+  border-radius: .25rem;
+  border: 1px solid gray;
+  text-align: center;
+  cursor: pointer;
+}
+
+.buttons {
+  margin-top: 5%;
+}

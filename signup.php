@@ -145,23 +145,25 @@
             </div>
 
             <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8">
+                <div class="col-2 col-md-4 col-xl-5"></div>
+                <div class="col-8 col-md-4 col-xl-2" >
                     <div class="signup-card bg-light">
                         <div class="header-container">
                             <h1 class="text-dark">Sign Up</h1>
                         </div>
                         <form method="post">
                             <div class="input-block">
-                                <label for="email">Email</label>
-                                <input id="email" type="text" name="email"></input>
+                                <!-- <label for="email">Email</label> -->
+                                <input id="email" type="text" name="email" placeholder="Email"></input>
                             </div>
                             <div class="input-block">
-                                <label for="password">Password</label>
-                                <input id="password" type="password" name="password"></input>
+                                <!-- <label for="password">Password</label> -->
+                                <input id="password" type="password" name="password" placeholder="Password"></input>
                             </div>
-                            <button type="button" onclick="window.location.href='index.html'">Back</button>
-                            <button type="submit" name="submit">Submit</button>
+                            <div class="input-block buttons">
+                                <button class="cancel" type="button" onclick="window.location.href='index.html'">Back</button>
+                                <button class="submit bg-success text-light" type="submit" name="submit">Submit</button>
+                            </div>
                         </form>
                     </div>
                 </div>
