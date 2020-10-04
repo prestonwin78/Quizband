@@ -13,9 +13,9 @@
 
     $email = "";
     $password = "";
-    $password_error = false;
+    $password_complex_error = false;
     $email_error = false;
-    $error_text = "";
+    $email_duplicate_error = false;
 
     $dbconn = connectToDb();
 
@@ -26,7 +26,7 @@
             $email = $_POST["email"];
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                 if(isEmailTaken($email, $dbconn)){
-                    $email_error = true;
+                    $email_duplicate_error = true;
                 } 
             } else {
                 $email_error = true;
@@ -37,16 +37,14 @@
 
         if(isset($_POST["password"])){
             $password = $_POST["password"];
-            $password_error = !checkPasswordComplexity($password);
+            $password_complex_error = !checkPasswordComplexity($password);
         } else {
-            $password_error = true;
+            $password_complex_error = true;
         }
 
-        if(!$email_error && !$password_error){
+        if(!$email_error && !$password_complex_error && !$email_duplicate_error){
             // Put into db
             createNewUserInDb($email, $password);
-        } else {
-            exit();
         }
     }
 
@@ -153,12 +151,15 @@
                         </div>
                         <form method="post">
                             <div class="input-block">
-                                <!-- <label for="email">Email</label> -->
                                 <input id="email" type="text" name="email" placeholder="Email"></input>
                             </div>
                             <div class="input-block">
-                                <!-- <label for="password">Password</label> -->
                                 <input id="password" type="password" name="password" placeholder="Password"></input>
+                            </div>
+                            <div class="text-block text-danger">
+                                <p class="email-taken" style=<?=($email_duplicate_error ? "display:block" : "display:none")?>>Email is already taken</p>
+                                <p class="email-invalid" style=<?=($email_error ? "display:block" : "display:none")?>>Must be a valid email address.</p>
+                                <p class="password-invalid" style=<?=($password_complex_error ? "display:block" : "display:none")?>>Password must contain a lowercase letter, uppercase letter and number.</p>
                             </div>
                             <div class="input-block buttons">
                                 <button class="cancel" type="button" onclick="window.location.href='index.html'">Back</button>
@@ -169,5 +170,5 @@
                 </div>
             </div>
         </div>
-    </body>
+    </body> 
 </html>

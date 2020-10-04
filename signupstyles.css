@@ -14,7 +14,7 @@
   font-size: 2rem;
 }
 
-.input-block {
+.input-block, .text-block{
   padding: 0 5% 2.5% 5%;
   margin: 0 5% 2.5% 5%;
 }
@@ -38,4 +38,8 @@
 
 .buttons {
   margin-top: 5%;
+}
+
+.email-taken, .email-invalid, .password-invalid {
+  display: none;
 }
