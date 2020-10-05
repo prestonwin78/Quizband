@@ -44,7 +44,7 @@
 
         if(!$email_error && !$password_complex_error && !$email_duplicate_error){
             // Put into db
-            createNewUserInDb($email, $password);
+            createNewUserInDb($email, $password, $dbconn);
         }
     }
 
@@ -114,8 +114,18 @@
     }
 
 
-    function createNewUserInDb($email, $password){
-        echo "in createnewuser";
+    function createNewUserInDb($email, $password, $conn){
+        $sql = "INSERT INTO users (email, password)
+                VALUES (?, ?)";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            return false;
+        } else {
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            mysqli_stmt_bind_param($stmt, "ss", $email, $password_hash);
+            mysqli_stmt_execute($stmt);
+            return true;
+        }
     }
 ?>
 
