@@ -1,4 +1,12 @@
 <?php 
+    session_start();
+    if(!empty($_SESSION['user_id'])){
+        echo "User is signed in </br>";
+        echo "User id: " . $_SESSION['user_id'] . "</br>";
+    } else {
+        echo "User is not signed in</br>";
+    }
+
 
     // Get array of quiz data to output
     $quizzes = getArray();

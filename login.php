@@ -17,13 +17,19 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
         $dbconn = connectToDb();
-        $dbpassword = getPasswordFromDb($email, $dbconn);
-        if(password_verify($password, $dbpassword) === true){
-          //Correct password
-          session_start(); 
-          $_SESSION['email'] = $email;
+        $credentials = getCredentialsFromDb($email, $dbconn);
+        if($credentials !== null){
+          $dbpassword = $credentials['password'];
+          $user_id = $credentials['user_id'];
+          if(password_verify($password, $dbpassword) === true){
+            //Correct password
+            session_start(); 
+            $_SESSION['user_id'] = $user_id;
+          } else {
+            // Wrong password
+            $signin_error = true;
+          }
         } else {
-          // Wrong password
           $signin_error = true;
         }
     }
@@ -41,8 +47,8 @@
   }
 
 
-  function getPasswordFromDb($email, $dbconn){
-    $sql = "SELECT password FROM users
+  function getCredentialsFromDb($email, $dbconn){
+    $sql = "SELECT password, user_id FROM users
             WHERE email=?";
     $stmt = mysqli_stmt_init($dbconn);
     if(mysqli_stmt_prepare($stmt, $sql)){
@@ -50,7 +56,14 @@
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
       $row = mysqli_fetch_assoc($result);
-      return $row['password'];
+      if(isset($row['password']) && isset($row['user_id'])){
+        return array(
+          'password' => $row['password'],
+          'user_id' => $row['user_id']
+        );
+      } else {
+        return null;
+      }
     }
   }
 ?>
