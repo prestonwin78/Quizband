@@ -14,8 +14,14 @@ h2 {
 }
 
 .plus-container {
-    width: 25%;
+    width: 30%;
     float: right;
+    cursor: pointer;
+    text-align: center;
+}
+
+.plus-container:hover {
+    background-color: hsl(0, 0%, 94%);
 }
 
 .divider {

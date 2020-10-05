@@ -123,9 +123,9 @@
         <div id="main-content" class="container-fluid">
             <div id="header" class="row bg-light">
             <a id="title" class="text-dark" href="../home.php">Quizband</a>
-                <a>Contact</a>
-                <a>About</a>
-                <a>Sign In</a>
+                <a href="../index.html">About</a>
+                <a href="../login.php">Sign In</a>
+                <a href="../signup.php">Sign Up</a>
             </div>
         </div>
         <div class="row main-section">

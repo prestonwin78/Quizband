@@ -20,6 +20,8 @@
         $dbpassword = getPasswordFromDb($email, $dbconn);
         if(password_verify($password, $dbpassword) === true){
           //Correct password
+          session_start(); 
+          $_SESSION['email'] = $email;
         } else {
           // Wrong password
           $signin_error = true;
@@ -70,10 +72,8 @@
         <div id="main-content" class="container-fluid">
             <div id="header" class="row bg-light">
               <a id="title" class="text-dark" href="home.php">Quizband</a>
-                <a>Contact</a>
-                <a>About</a>
-                <a>Sign In</a>
-                <a>Sign Up</a>
+              <a href="index.html">About</a>
+              <a href="signup.php">Sign Up</a>
             </div>
 
             <div class="row">
@@ -94,7 +94,7 @@
                                 <p class="invalid" style=<?=($signin_error ? "display:block" : "display:none")?>>Error signing in.</p>
                             </div>
                             <div class="input-block buttons">
-                                <button class="cancel" type="button" onclick="window.location.href='index.html'">Back</button>
+                                <button class="cancel" type="button" onclick="window.location.href='home.php'">Back</button>
                                 <button class="submit bg-success text-light" type="submit" name="login-submit" value="submitted">Login</button>
                             </div>
                         </form>

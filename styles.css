@@ -55,6 +55,7 @@ hr {
     padding: 16px 40px;
     position: relative;
     top: 100px;
+    cursor: pointer;
 }
 
 #start:hover {
@@ -71,8 +72,8 @@ hr {
 }
 
 .blue-bar {
-    height: 20px;
-    background-color: hsl(269, 52%, 50%);
+    height: 15px;
+    background-color: hsl(270, 57%, 23%);
     margin: 50px 20%;
 }
 
