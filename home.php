@@ -1,10 +1,10 @@
 <?php 
     session_start();
+    $signed_in = false;
     if(!empty($_SESSION['user_id'])){
-        echo "User is signed in </br>";
-        echo "User id: " . $_SESSION['user_id'] . "</br>";
+        $signed_in = true;
     } else {
-        echo "User is not signed in</br>";
+        $signed_in = false;
     }
 
 
@@ -134,8 +134,8 @@
             <div id="header" class="row bg-light">
                 <a id="title" class="text-dark" href="home.php">Quizband</a>
                 <a href="index.html">About</a>
-                <a href="login.php">Sign In</a>
-                <a href="signup.php">Sign Up</a>
+                <a href="login.php" style=<?= $signed_in ? "display:none" : "display:block" ?>>Sign In</a>
+                <a href="signup.php" style=<?= $signed_in ? "display:none" : "display:block" ?>>Sign Up</a>
             </div>
             <div class="row main-section">
                 <h1>Hello.</h1>
@@ -181,8 +181,11 @@
                     <div class="row">
                         <div class="card quiz-card">
                             <div class="card-body">
-                                <h5>New Quiz</h5>
-                                <div id="new-quiz-plus" class="plus-container">
+                                <h5 style=<?= $signed_in ? "display:block" : "display:none" ?>>New Quiz</h5>
+                                <p style=<?= $signed_in ? "display:none" : "display:block" ?> class="askSignin">
+                                    Sign in to create a new quiz.
+                                </p>
+                                <div id="new-quiz-plus" class="plus-container" style=<?= $signed_in ? "display:block" : "display:none" ?>>
                                     <svg width="2em" height="3em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                     </svg>

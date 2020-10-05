@@ -25,6 +25,8 @@
             //Correct password
             session_start(); 
             $_SESSION['user_id'] = $user_id;
+            header("Location: ./home.php");
+            exit();
           } else {
             // Wrong password
             $signin_error = true;
