@@ -1,6 +1,6 @@
 <?php
 
-    /*
+    
     echo "sign up";
     echo "</br></br>";
     echo "submit: " . $_POST["submit"];
@@ -9,7 +9,7 @@
     echo "</br>";
     echo "password: " . $_POST["password"];
     echo "</br></br>";
-    */
+    
 
     $email = "";
     $password = "";
