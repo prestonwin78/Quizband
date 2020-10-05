@@ -1,4 +1,5 @@
 <?php 
+
     $quiz_title = "";
     $quiz_subject = "No Subject";
     $quiz_id = null;
