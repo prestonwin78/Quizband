@@ -10,6 +10,13 @@
   $password = "";
   $signin_error = false;
 
+  $signup_success = false;
+  if ($_SERVER['REQUEST_METHOD'] == 'GET'){
+    if(isset($_GET['success'])){
+      $signup_success = true;
+    }
+  }
+
   if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(!empty($_POST['login-submit'])
       && !empty($_POST['email'])
@@ -94,6 +101,10 @@
             <div class="row">
                 <div class="col-2 col-md-4 col-xl-5"></div>
                 <div class="col-8 col-md-4 col-xl-2" >
+                    <div class="success-msg bg-light" style=<?=$signup_success ? "display:block" : "display:none"?>>
+                      <p class="text-success">User successfully created.</p>
+                    </div>
+
                     <div class="signup-card bg-light">
                         <div class="header-container">
                             <h1 class="text-dark">Login</h1>

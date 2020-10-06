@@ -44,7 +44,10 @@
 
         if(!$email_error && !$password_complex_error && !$email_duplicate_error){
             // Put into db
-            createNewUserInDb($email, $password, $dbconn);
+            $success = createNewUserInDb($email, $password, $dbconn);
+            if($success === true){
+                header("Location: ./login.php?success=true");
+            }
         }
     }
 

@@ -43,3 +43,12 @@
 .email-taken, .email-invalid, .password-invalid {
   display: none;
 }
+
+.success-msg {
+  width: 100%;
+  padding: .25rem;
+  font-size: 1rem;
+  margin-top: 3rem;
+  border: 1px solid gray;
+  border-radius: .5rem;
+}
