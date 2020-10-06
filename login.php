@@ -5,6 +5,7 @@
   echo $_POST['login-submit'] . "</br>";
   echo print_r($_POST);
   */
+  include("./config.php");
 
   $email = "";
   $password = "";
@@ -46,7 +47,7 @@
 
 
   function connectToDb(){
-    $conn = mysqli_connect('localhost', "guest", "guestpass123", "quizband");
+    $conn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
 
     if(!$conn){
         echo "Can't connect to database";

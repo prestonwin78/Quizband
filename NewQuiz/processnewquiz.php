@@ -1,4 +1,5 @@
 <?php 
+    include("./config.php");
 
     $user_id = 1;
     //exit if user is not signed in
@@ -33,7 +34,7 @@
 
         /* If query is valid, connect to database and insert quiz data */
 
-        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+        $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
 
         if($dbconn){
             $quiz_id = insertQuizInDatabase($dbconn, $quiz_title, $quiz_description, $quiz_subject, $user_id);

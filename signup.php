@@ -1,5 +1,5 @@
 <?php
-
+    include("./config.php");
     /*
     echo "sign up";
     echo "</br></br>";
@@ -84,7 +84,7 @@
     }
 
     function connectToDb(){
-        $conn = mysqli_connect('localhost', "guest", "guestpass123", "quizband");
+        $conn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
     
         if(!$conn){
             echo "Can't connect to database";

@@ -1,4 +1,6 @@
 <?php 
+    include("./config.php");
+
     session_start();
     $signed_in = false;
     if(!empty($_SESSION['user_id'])){
@@ -13,7 +15,7 @@
 
     // returns array of quizzes ready for output
     function getArray(){
-        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+        $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
         if(!$dbconn){
             echo "error connecting";
         } else {
