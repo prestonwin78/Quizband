@@ -82,8 +82,9 @@
             <div id="header" class="row bg-light">
                 <a id="title" class="text-dark" href="home.php">Quizband</a>
                 <a href="index.html">About</a>
-                <a href="login.php" style=<?= $signed_in ? "display:none" : "display:block" ?>>Sign In</a>
+                <a href="login.php"  style=<?= $signed_in ? "display:none" : "display:block" ?>>Sign In</a>
                 <a href="signup.php" style=<?= $signed_in ? "display:none" : "display:block" ?>>Sign Up</a>
+                <a href="signout.php" style=<?= $signed_in ? "display:block" : "display:none" ?>>Sign Out</a>
             </div>
             <div class="row main-section">
                 <h1>Hello.</h1>

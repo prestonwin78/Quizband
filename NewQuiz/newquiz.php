@@ -2,7 +2,7 @@
   session_start();
   //If user is signed out, redirect to signin page
   if(empty($_SESSION['user_id'])){
-    header("Location: ../signup.php");
+    header("Location: ../login.php");
     exit();
   }
 ?>
