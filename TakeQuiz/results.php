@@ -66,7 +66,11 @@
         $total_correct = getNumCorrect($dbanswers, $useranswers);
     
         //Calculate score to 0 decimal places
-        return floor($total_correct / $total_questions * 100);
+        if($total_questions === 0){
+            return 0;
+        } else {
+            return floor($total_correct / $total_questions * 100);
+        }
     }
 
 
@@ -81,9 +85,11 @@
         //is equal to the text submitted by the user
         foreach ($dbanswers as $question){
             $question_num = $question['question_num'];
-            if($question['choice_text'] === $useranswers[$question_num]){
-                $total_correct++;
-            } 
+            if(isset($useranswers[$question_num])){
+                if($question['choice_text'] === $useranswers[$question_num]){
+                    $total_correct++;
+                } 
+            }
         }
 
         return $total_correct;
