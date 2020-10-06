@@ -1,9 +1,18 @@
 <?php 
 
+    $user_id = 1;
+    //exit if user is not signed in
+    session_start();
+    if(empty($_SESSION['user_id'])){
+        header("Location: ../home.php");
+        exit(); 
+    } else {
+        $user_id = $_SESSION['user_id'];
+    }
+
     $quiz_title = "";
     $quiz_subject = "No Subject";
     $quiz_id = null;
-    $user_id = 1;   // needs to be set earlier
 
     if(isset($_POST['quiz-title'])){
         $quiz_title = $_POST['quiz-title']; 
