@@ -19,32 +19,13 @@
         if(!$dbconn){
             echo "error connecting";
         } else {
-            /* Get 3 random quiz ids of quizzes to display on page */
-            $arr = getQuizIds($dbconn);
-
             //get array holding info about each quiz
-            $quiz_data = getQuizData($dbconn, $arr);
+            $quiz_data = getQuizData($dbconn);
 
             mysqli_close($dbconn);  //close connection
 
             return $quiz_data;
         }
-    }
-
-    /* returns an array of 3 unique quiz IDs */
-    function getQuizIds($dbconn){
-        $quiz_arr = [];
-        $total_quizzes = getTotalQuizzes($dbconn);
-        for($i = 0; $i < 3; $i++){
-            $rand = random_int(1, $total_quizzes);
-            // keep getting random numbers until rand is unique
-            while(in_array($rand, $quiz_arr)){
-                // get random number from 1 to the total amount
-                $rand = random_int(1, $total_quizzes);
-            }
-            $quiz_arr[$i] = $rand;  //put random value in quiz array
-        }
-        return $quiz_arr;
     }
 
     /* returns total number of quizzes in the database */
@@ -59,61 +40,26 @@
         }
     }
 
-    // Returns array of quiz data
-    //  in form [quiz-id] => [description, name, ...]
-    function getQuizData($dbconn, $quizIDs){
+    // Gets data from 3 random public quizzes
+    //  in form [row_num] => [quiz_id, description, name, ...]
+    function getQuizData($dbconn){
+        /*$query = "SELECT * FROM quiz
+                  WHERE quiz_id=?";*/
+
         $query = "SELECT * FROM quiz
-                  WHERE quiz_id=?";
-        // Use prepared statement to get data from database
-        $stmt = mysqli_stmt_init($dbconn);
-        if(!mysqli_stmt_prepare($stmt, $query)){
-            echo "error";
+                  WHERE visibility='public'
+                  ORDER BY RAND()
+                  LIMIT 3";
+        $result = mysqli_query($dbconn, $query);
+        if(!$result){
+            return null;
         } else {
-            $q_id = null; 
-            $quiz_data = [];    
-            mysqli_stmt_bind_param($stmt, "i", $q_id);
-
-            // Build quiz_data array for each quiz ID in 
-            // the quiz ID array
-            foreach($quizIDs as $q_id){
-                if(!mysqli_stmt_execute($stmt)){
-                    echo "Error";
-                } else {
-                    $result = mysqli_stmt_get_result($stmt);
-                    $quiz_data[$q_id] = mysqli_fetch_row($result);
-                }
+            $quiz_data = [];
+            $index = 0;
+            while($row = mysqli_fetch_assoc($result)){
+                $quiz_data[$index++] = $row;
             }
-
-            reindex($quiz_data);
-
             return $quiz_data;
-        }
-    }
-
-    /* Reindex array to use names as indexes instead of numbers */
-    function reindex(&$quiz_data){
-        foreach($quiz_data as $q_id => $row){
-            foreach($row as $key => $value){
-                unset($quiz_data[$q_id][$key]); // unset previous value
-                // set new value
-                switch($key){
-                    case 0:
-                        $quiz_data[$q_id]['quiz_id'] = $value;
-                        break;
-                    case 1:
-                        $quiz_data[$q_id]['title'] = $value;
-                        break;
-                    case 2:
-                        $quiz_data[$q_id]['description'] = $value;
-                        break;
-                    case 3:
-                        $quiz_data[$q_id]['subject'] = $value;
-                        break;
-                    case 4:
-                        $quiz_data[$q_id]['creator'] = $value;
-                        break;
-                }
-            }
         }
     }
 ?>
@@ -161,12 +107,12 @@
                         </div>
                     </div>
 
-                    <?php foreach($quizzes as $q_id => $q_data){ ?>
+                    <?php foreach($quizzes as $row_num => $q_data){ ?>
 
                         <div class="row">
                             <div class="card quiz-card">
                                 <div class="card-body">
-                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo htmlspecialchars($q_id);?>"><?= htmlspecialchars($q_data['title']) ?></a>
+                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo htmlspecialchars($q_data['quiz_id']);?>"><?= htmlspecialchars($q_data['title']) ?></a>
                                     <p class="card-text"><?= htmlspecialchars($q_data['description']) ?></p>
                                     <h6 class="tag tag-<?php echo htmlspecialchars($q_data['subject']); ?>"><?= htmlspecialchars($q_data['subject']) ?></h6>
                                 </div>
