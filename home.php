@@ -9,36 +9,16 @@
         $signed_in = false;
     }
 
-
-    // Get array of quiz data to output
-    $quizzes = getArray();
-
-    // returns array of quizzes ready for output
-    function getArray(){
-        $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
-        if(!$dbconn){
-            echo "error connecting";
-        } else {
-            //get array holding info about each quiz
-            $quiz_data = getQuizData($dbconn);
-
-            mysqli_close($dbconn);  //close connection
-
-            return $quiz_data;
-        }
+    $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
+    if(!$dbconn){
+        echo "error connecting";
+    } else {
+        // Get array of quiz data to output
+        $quizzes = getQuizData($dbconn);
+        
+        mysqli_close($dbconn);  //close connection
     }
 
-    /* returns total number of quizzes in the database */
-    function getTotalQuizzes($dbconn){
-        $query = "SELECT COUNT(*) FROM quiz";
-        $result = mysqli_query($dbconn, $query);
-        if(!$result){   
-            echo "Error";
-            return 0;
-        } else {
-            return mysqli_fetch_row($result)[0];
-        }
-    }
 
     // Gets data from 3 random public quizzes
     //  in form [row_num] => [quiz_id, description, name, ...]
