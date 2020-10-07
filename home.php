@@ -3,18 +3,25 @@
 
     session_start();
     $signed_in = false;
+    $user_id = -1;
     if(!empty($_SESSION['user_id'])){
         $signed_in = true;
+        $user_id = $_SESSION['user_id'];
     } else {
         $signed_in = false;
     }
 
     $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
+    $quizzes = [];
+    $user_quizzes = [];
     if(!$dbconn){
         echo "error connecting";
     } else {
         // Get array of quiz data to output
         $quizzes = getQuizData($dbconn);
+        if($signed_in){
+            $user_quizzes = getUserQuizzes($dbconn, $user_id);
+        }
         
         mysqli_close($dbconn);  //close connection
     }
@@ -40,6 +47,21 @@
                 $quiz_data[$index++] = $row;
             }
             return $quiz_data;
+        }
+    }
+
+    // Gets all quizzes by the user in the database
+    //  in form [row_num] => [quiz_id, description, name, ...]
+    function getUserQuizzes($dbconn, $user_id){
+        $sql = "SELECT * FROM quiz
+                WHERE creator=?";
+        $stmt = mysqli_stmt_init($dbconn);
+        if(mysqli_stmt_prepare($stmt, $sql)){
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $arr = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            return $arr;
         }
     }
 ?>
@@ -122,6 +144,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <h2 class="text-light">My Quizzes</h2>
+                    </div>
+
+                    <?php foreach($user_quizzes as $row_num => $q_data){ ?>
+
+                        <div class="row">
+                            <div class="card quiz-card">
+                                <div class="card-body">
+                                    <a class="card-title text-dark" href="./TakeQuiz/takequiz.php?quiz_id=<?php echo htmlspecialchars($q_data['quiz_id']);?>"><?= htmlspecialchars($q_data['title']) ?></a>
+                                    <p class="card-text"><?= htmlspecialchars($q_data['description']) ?></p>
+                                    <p class="card-text bold"><strong>ID: <?= htmlspecialchars($q_data['quiz_id']) ?> </strong></p>
+                                    <h6 class="tag tag-<?php echo htmlspecialchars($q_data['subject']); ?>"><?= htmlspecialchars($q_data['subject']) ?></h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php } ?>
                 </div>
             </div>
         </div>
