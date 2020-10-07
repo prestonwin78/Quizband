@@ -28,11 +28,32 @@
 
 .answer-choice {
     margin: .5em 0;
-    padding: .5em .5em 0 .5em;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
 }
 
+.answer-choice:hover {
+    background-color: hsl(0, 0%, 90%);
+    cursor: pointer;
+}
+
 .question-text {
     margin-bottom: .5em;
+}
+
+label {
+    margin: 0;
+    padding: 0;
+}
+
+/* So click anywhere in the div selects
+    the answer choice */
+.label {
+    width: 100%;
+    height: 100%;
+    padding: .5em;
+}
+
+.label:hover {
+    cursor: pointer;
 }

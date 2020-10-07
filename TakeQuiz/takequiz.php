@@ -147,8 +147,10 @@
 
                             <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
                                 <div class="answer-choice">                                         
-                                    <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
-                                    <label for="<?php echo "q" . $i . "a" . $j;?>"><?php echo htmlspecialchars($choices[$i][$j]);?></label>
+                                    <label class="label" for="<?php echo "q" . $i . "a" . $j;?>">
+                                        <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
+                                        <?php echo htmlspecialchars($choices[$i][$j]);?>
+                                    </label>
                                 </div>
                             <?php } ?>
 
