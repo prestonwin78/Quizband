@@ -1,4 +1,5 @@
 <?php 
+    include("../config.php");
 
     // Calculate and output results of the quiz
 

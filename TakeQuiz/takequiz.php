@@ -1,4 +1,6 @@
 <?php 
+
+    include("../config.php");
      
     $dbquestions = [];
     $questions = [];
@@ -11,7 +13,7 @@
         $quiz_id = $_GET['quiz_id'];
 
         // Connect to database
-        $dbconn = mysqli_connect("localhost", "guest", "guestpass123", "quizband");
+        $dbconn = mysqli_connect(HOST, DBUSERNAME, DBPASSWORD, DBNAME);
      
         // check connection
         if($dbconn){
