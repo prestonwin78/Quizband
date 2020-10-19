@@ -8,6 +8,7 @@
     $quiz_id = -1;       //passed to results page
     $quiz_title = "";
     $quiz_subject = "";
+    $quiz_not_found_err = false;
 
     if(!empty($_GET['quiz_id'])){
         $quiz_id = $_GET['quiz_id'];
@@ -17,14 +18,17 @@
      
         // check connection
         if($dbconn){
-            $quiz_arr = getQuestionsAndAnswers($dbconn, $quiz_id);
-            $questions = $quiz_arr['questions'];    // an array of questions
-            $choices = $quiz_arr['answer_choices']; // an array of answer choices
+            if(checkValidQuizId($dbconn, $quiz_id)){
+                $quiz_not_found_err = true;
+            } else {
+                $quiz_arr = getQuestionsAndAnswers($dbconn, $quiz_id);
+                $questions = $quiz_arr['questions'];    // an array of questions
+                $choices = $quiz_arr['answer_choices']; // an array of answer choices
 
-            $temp = getTitleAndSubject($dbconn, $quiz_id);
-            $quiz_title = $temp['title'];           // the quiz title string 
-            $quiz_subject = $temp['subject'];       // the quiz subject string
-            
+                $temp = getTitleAndSubject($dbconn, $quiz_id);
+                $quiz_title = $temp['title'];           // the quiz title string 
+                $quiz_subject = $temp['subject'];       // the quiz subject string
+            }
         } else {
             echo "Error connecting to database: " . mysqli_connect_error();
         }   
@@ -106,6 +110,26 @@
             'subject' => $quiz_subject
         );
      }
+
+     // Checks if quiz ID passed in by user is actually
+     // in the database - returns true if success
+     function checkValidQuizId($dbconn, $quiz_id) {
+        $isValid = false;
+        $query = "SELECT COUNT(*) FROM quiz
+                  WHERE quiz_id=?";
+        $stmt = mysqli_stmt_init($dbconn);
+        if(mysqli_stmt_prepare($stmt, $query)){
+            mysqli_stmt_bind_param($stmt, "i", $quiz_id);
+            if(mysqli_stmt_execute($stmt)){
+                $result = mysqli_stmt_get_result($stmt);
+                $numQuiz = (int)mysqli_fetch_row($result)[0];
+                if($numQuiz === 0){
+                    $isValid = true;
+                }
+            }
+        }
+        return $isValid;
+     }
 ?>
 
 <!DOCTYPE html>
@@ -128,54 +152,73 @@
                 <a href="../index.html">About</a>
             </div>
         </div>
-        <div class="row main-section">
-            <div class="col-12 text-center">
-                <h1 id="create-quiz-text"><?php echo htmlspecialchars($quiz_title); ?></h1>
-            </div>
-        </div>
-        
-        <form action="results.php" method="post">
 
-            <!-- Dynamically add a card for each question -->
-
-            <?php for($i = 1; $i <= sizeof($choices); $i++){ ?>
-                <div class="row main-section">
-                    <div class="col-3"></div>
-                    <div class="col-6 quizcard bg-light">
-                        <h2 class="question-text"><?php echo htmlspecialchars($questions[$i]);?></h2>
-                        <div class="answer-options">
-
-                            <!-- build answer choices -->
-
-                            <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
-                                <div class="answer-choice">                                         
-                                    <label class="label" for="<?php echo "q" . $i . "a" . $j;?>">
-                                        <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
-                                        <?php echo htmlspecialchars($choices[$i][$j]);?>
-                                    </label>
-                                </div>
-                            <?php } ?>
-
-                            <!-- end answer choices -->
-
-                        </div>
-                    </div>
+        <?php if($quiz_not_found_err){ ?>
+            <!-- error message block -->
+            <div class="row">
                 <div class="col-3"></div>
-            </div>
-            <?php } ?>
-
-            <!-- end card section -->
-            
-            <div class="row main-section">
-                <div class="col-6"></div>
-                <div class="col-6">
-                    <button id="cancel" class="btn btn-light" onclick="event.preventDefault(); window.location.href = '../home.php';">Cancel</button>
-                    <button id="submit" class="btn btn-primary shadow">Submit</button>
+                <div class="col-6 bg-light error-block">
+                    <p class="text-danger">Could not find quiz.</p>
                 </div>
             </div>
-            <div id="blank-row" class="main-section"></div>
-            <input type='hidden' id="quizid" name='quizid' value="<?php echo $quiz_id;?>">
-            <input type='hidden' id="quizsub" name='quiz-subject' value="<?php echo $quiz_subject;?>">
-            <input type='hidden' id="quiztitle" name='quiz-title' value="<?php echo $quiz_title;?>">
-        </form>
+            <!-- cancel button block -->
+            <div class="row main-section">
+                <div class="col-5"></div>
+                <div class="col-6">
+                    <button id="cancel" class="btn btn-light" onclick="event.preventDefault(); window.location.href = '../home.php';">Cancel</button>
+                </div>
+            </div>
+        <?php } else { ?>
+
+            <div class="row main-section">
+                <div class="col-12 text-center">
+                    <h1 id="create-quiz-text"><?php echo htmlspecialchars($quiz_title); ?></h1>
+                </div>
+            </div>
+            
+            <form action="results.php" method="post">
+
+                <!-- Dynamically add a card for each question -->
+
+                <?php for($i = 1; $i <= sizeof($choices); $i++){ ?>
+                    <div class="row main-section">
+                        <div class="col-3"></div>
+                        <div class="col-6 quizcard bg-light">
+                            <h2 class="question-text"><?php echo htmlspecialchars($questions[$i]);?></h2>
+                            <div class="answer-options">
+
+                                <!-- build answer choices -->
+
+                                <?php for($j = 1; $j <= sizeof($choices[$i]); $j++){ ?>
+                                    <div class="answer-choice">                                         
+                                        <label class="label" for="<?php echo "q" . $i . "a" . $j;?>">
+                                            <input type="radio" id="<?php echo "q" . $i . "a" . $j;?>" name="<?php echo "question" . $i;?>" value="<?php echo htmlspecialchars($choices[$i][$j]);?>">
+                                            <?php echo htmlspecialchars($choices[$i][$j]);?>
+                                        </label>
+                                    </div>
+                                <?php } ?>
+
+                                <!-- end answer choices -->
+
+                            </div>
+                        </div>
+                    <div class="col-3"></div>
+                </div>
+                <?php } ?>
+
+                <!-- end card section -->
+                
+                <div class="row main-section">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <button id="cancel" class="btn btn-light" onclick="event.preventDefault(); window.location.href = '../home.php';">Cancel</button>
+                        <button id="submit" class="btn btn-primary shadow">Submit</button>
+                    </div>
+                </div>
+                <div id="blank-row" class="main-section"></div>
+                <input type='hidden' id="quizid" name='quizid' value="<?php echo $quiz_id;?>">
+                <input type='hidden' id="quizsub" name='quiz-subject' value="<?php echo $quiz_subject;?>">
+                <input type='hidden' id="quiztitle" name='quiz-title' value="<?php echo $quiz_title;?>">
+            </form>
+        <?php } ?>
     <body>

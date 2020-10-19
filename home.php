@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="row">
-                        <div id="id-container" class="col">
+                        <div id="id-container">
                             <form action="./TakeQuiz/takequiz.php">
                                 <input type="text" id="quiz-by-id" name="quiz_id" placeholder="By ID"></input>
                             </form>
