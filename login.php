@@ -100,8 +100,8 @@
             </div>
 
             <div class="row">
-                <div class="col-2 col-md-4 col-xl-5"></div>
-                <div class="col-8 col-md-4 col-xl-2" >
+                <div class="col-2 col-md-4"></div>
+                <div class="col-8 col-md-4" >
                     <div class="success-msg bg-light" style=<?=$signup_success ? "display:block" : "display:none"?>>
                       <p class="text-success">User successfully created.</p>
                     </div>

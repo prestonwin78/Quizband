@@ -154,8 +154,8 @@
             </div>
 
             <div class="row">
-                <div class="col-2 col-md-4 col-xl-5"></div>
-                <div class="col-8 col-md-4 col-xl-2" >
+                <div class="col-2 col-md-4"></div>
+                <div class="col-8 col-md-4" >
                     <div class="signup-card bg-light">
                         <div class="header-container">
                             <h1 class="text-dark">Sign Up</h1>
