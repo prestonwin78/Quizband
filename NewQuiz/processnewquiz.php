@@ -75,8 +75,6 @@
 
     // Inserts a new quiz entity in the database and returns the quiz ID generated
     function insertQuizInDatabase($dbconn, $quiz_title, $quiz_description, $quiz_subject, $user_id){
-        /*  Make quiz query to insert a new quiz 
-            quiz: (quiz_id, title, description, subject, creator) */
         $insert_quiz_query = "INSERT INTO quiz (title, description, subject, creator, visibility)
                             VALUES (?, ?, ?, ?, 'private')";
         $stmt = mysqli_stmt_init($dbconn);

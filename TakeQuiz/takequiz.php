@@ -112,11 +112,11 @@
      }
 
      // Checks if quiz ID passed in by user is actually
-     // in the database - returns true if success
+     // in the database and public - returns true if success
      function checkValidQuizId($dbconn, $quiz_id) {
         $isValid = false;
         $query = "SELECT COUNT(*) FROM quiz
-                  WHERE quiz_id=?";
+                  WHERE quiz_id=? and visibility='public'";
         $stmt = mysqli_stmt_init($dbconn);
         if(mysqli_stmt_prepare($stmt, $query)){
             mysqli_stmt_bind_param($stmt, "i", $quiz_id);
@@ -158,7 +158,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6 bg-light error-block">
-                    <p class="text-danger">Could not find quiz.</p>
+                    <p class="text-danger">Invalid Quiz Id.</p>
                 </div>
             </div>
             <!-- cancel button block -->
